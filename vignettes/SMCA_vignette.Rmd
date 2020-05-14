@@ -1,0 +1,22 @@
+---
+title: "SMCA_vignette"
+author: "Julie Le Borgne"
+date: "14/05/2020"
+output: html_document
+---
+
+```{r loadingPackages}
+```
+
+This vignette illustrates the use of the SMCA package to make a sparsified analysis of a categorical data set.
+
+# Understanding the data
+
+
+```{r}
+```
+
+# Apply a Sparse MCA
+## Plot the SMCA results
+
+## Vary the constraints
