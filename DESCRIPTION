@@ -1,0 +1,10 @@
+Package: SMCA
+Type: Package
+Title: Gives the sparse PCA and MCA of a data set 
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: This package calculates the CSVD (constrained SVD) or CGSVD (constrained GSVD) of a given data set and returns the sparse PCA or MCA.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
