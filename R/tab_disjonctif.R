@@ -13,6 +13,7 @@
 #' tab_disjonctif(tea)
 #'
 tab_disjonctif <- function (X) {
+  X <- as.matrix(X)
   m <- nrow(X)
   n <- ncol(X)
 

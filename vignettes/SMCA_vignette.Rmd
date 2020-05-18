@@ -2,10 +2,13 @@
 title: "SMCA_vignette"
 author: "Julie Le Borgne"
 date: "14/05/2020"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r loadingPackages}
+library(ggplot2)
 ```
 
 This vignette illustrates the use of the SMCA package to make a sparsified analysis of a categorical data set.
@@ -14,9 +17,19 @@ This vignette illustrates the use of the SMCA package to make a sparsified analy
 
 
 ```{r}
+A <- data.frame(age = c(1, 1, 2, 3, 3), bureau = c("A", "A", "A", "B", "B"), col.cheveux = c("chat", "brun", "blond", "blond", "brun"))
 ```
 
 # Apply a Sparse MCA
+```{r}
+n <- min (nrow(A), 8)
+res <- SMCA::SMCA(A, c1 = 1.2, c2 = 1.5, n = n)
+res1 <- SMCA::MCA(A, n = n)
+```
 ## Plot the SMCA results
+```{r}
+SMCA::plot_SMCA(res1, choix = "ind", aff.noms = T)
+SMCA::plot_SMCA(res1, choix = "mod", aff.noms = T)
 
+```
 ## Vary the constraints

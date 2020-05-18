@@ -25,8 +25,9 @@ MCA <- function(Y, n = 5) {
   )
 
   F <- res$P %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$r)^(-1/2)) %*% res$P %*% diag(sqrt(res$D))[,1:n]
-  contrib <- (F^2) %*% diag(1/colSums(F^2)) * 100
-  cos2 <- t(t(F^2)%*%diag(1/rowSums(F^2)))
+  F2 <- F^2
+  contrib <- (F2) %*% diag(1/colSums(F2)) * 100
+  cos2 <- t(t(F2)%*%diag(1/rowSums(F2)))
 
   col <- paste("dim", seq(from = 1, by = 1, length = n))
   colnames(F) <- colnames(contrib) <- colnames (cos2) <- col
@@ -35,7 +36,7 @@ MCA <- function(Y, n = 5) {
 
 
   G <- res$Q %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$c)^(-1/2)) %*% res$Q %*% diag(sqrt(res$D))[,1:n]
-  contrib <- (G^2) %*% diag(1/colSums(G^2)) * 100
+  contrib <- (G^2) %*% diag(1/colSums(G^2)) * 100 #ameliorer : mettre G^2 et F^2 dans un objet
   cos2 <- t(t(G^2)%*%diag(1/rowSums(G^2)))
 
   partition <- partition_variables(Y)
