@@ -25,7 +25,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     shap <- 16
     alpha <- 0.5
     size <- res$ind$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$ind$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
-    ix_label <- which(res$ind$contrib[,axes[1]] > 0.5)
+    ix_label <- which(res$ind$contrib[,axes[1]] > 0.3 | res$ind$contrib[,axes[2]] > 0.3)
 
   }else if (choix == "mod") {
     coord <- res$var$coord
@@ -34,7 +34,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     shap <- 17
     alpha <- 0.5
     size <- res$var$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$var$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
-    ix_label <- which(res$var$contrib[,axes[1]] > 0.5)
+    ix_label <- which(res$var$contrib[,axes[1]] > 0.3 | res$var$contrib[,axes[2]] > 0.3)
 
   }else if (choix == "var") {
     coord <- res$var$eta2
@@ -43,7 +43,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     col <- "red"
     shap <- 18
     alpha <- 0.5
-    ix_label <- which(res$var$eta2[,axes[1]] > 0.001)
+    ix_label <- which(res$var$eta2[,axes[1]] > 0.001 | res$var$eta2[,axes[2]])
   }
 
 
