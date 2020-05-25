@@ -16,7 +16,7 @@ partition_variables <- function (Y) {
   k <- 0
 
   for (i in 1:n) {
-    lev <- levels(Y[, i])
+    lev <- levels(as.factor(Y[, i]))
     G[[i]] <- (1+k):(length(lev)+k)
     k <- length(lev)+k
   }

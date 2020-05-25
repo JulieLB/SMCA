@@ -4,7 +4,7 @@
 #' @param axes The axes we want to show
 #' @param choix With this options, we decide if we want the individual plot (choix = "ind") or the Categories plot (choix = "var")
 #' @param aff.noms If TRUE (default), the points names are shown
-#' @param habillage The number of the variable according to which we want to color the points. If NULL (default), all the points will be of the same color.
+#' @param habillage The number of the variable according to which we want to color the individuals points. If NULL (default), all the points will be of the same color.
 #'
 #' @return Returns a map (ggplot2) of the individuals or the categories with options.
 #' @export
@@ -15,12 +15,12 @@
 #' plot.SMCA(res, choix = "ind", aff.noms = F, habillage = 3)
 #' plot.SMCA(res, choix = "var", aff.noms = T)
 
-plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL) {
+plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL, title.precision = NULL) {
 
   #est ce qu'il s'agit d'un plot sur les individus ou sur les variables
   if (choix == "ind") {
     coord <- res$ind$coord
-    title <- "Individuals factor map (SMCA)"
+    title <- "Individuals factor map"
     col <- "blue"
     shap <- 16
     alpha <- 0.5
@@ -29,7 +29,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
 
   }else if (choix == "mod") {
     coord <- res$var$coord
-    title <- "Categories factor map (SMCA)"
+    title <- "Categories factor map"
     col <- "red"
     shap <- 17
     alpha <- 0.5
@@ -38,7 +38,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
 
   }else if (choix == "var") {
     coord <- res$var$eta2
-    title <- "Variables factor map (SMCA)"
+    title <- "Variables factor map "
     size <- 3
     col <- "red"
     shap <- 18
@@ -46,6 +46,10 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     ix_label <- which(res$var$eta2[,axes[1]] > 0.001 | res$var$eta2[,axes[2]])
   }
 
+  #add a precision to the title ?
+  if (is.character(title.precision)) {
+    title <- paste (title, title.precision, sep = " ")
+  }
 
 
   contrib <- res$eig$percentageOfVariance

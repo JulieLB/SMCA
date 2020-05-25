@@ -15,6 +15,8 @@ MCA <- function(Y, n = 5) {
 
   X <- tab_disjonctif(Y)
 
+  if (n > min(ncol(X), nrow(X))) n <- min(ncol(X), nrow(X))
+
   res <- gsvd(Y = Y, X = X, R = n)
 
   eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = length(res$D)),
