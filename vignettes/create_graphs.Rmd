@@ -1,0 +1,44 @@
+---
+title: "Create Graphs"
+author: "Julie Le Borgne"
+date: "25/05/2020"
+output: html_document
+---
+
+
+
+```{r}
+library(SMCA)
+library(ggpubr)
+library(ggplot2)
+```
+
+```{r}
+data(cheese)
+
+```
+
+On crée une partition des individus sur les villes et des modalités sur les variables. 
+
+```{r}
+c1 <- 1
+c2 <- 1
+Gvar <- partition_variables(cheese)
+
+Gobs <- partition_select (cheese [,3])
+
+```
+
+```{r}
+res.smca1 <- SMCA(cheese, c1 = c1, c2 = c2, Gcol = Gvar, Grow = Gobs)
+```
+
+
+```{r}
+
+plot_SMCA(res.smca1, aff.noms = T) + theme(legend.position = "none")
+plot_SMCA(res.smca1, choix = "var", aff.noms = T) + theme(legend.position = "none")
+plot_SMCA(res.smca1, choix = "mod", aff.noms = T) + theme(legend.position = "none")
+
+
+```
