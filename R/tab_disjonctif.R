@@ -19,7 +19,7 @@ tab_disjonctif <- function (X) {
 
   X <- as.data.frame(X)
   newdata <- lapply (1:n, function (i) {
-    lev <- levels(X[, i])
+    lev <- levels(as.factor(X[, i]))
 
     stmp <- sapply (1:m, function (j) {
       as.numeric(X[j, i] == lev) #the level equal to the row will get 1 and the others 0

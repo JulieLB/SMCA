@@ -31,4 +31,3 @@ partition_select <- function (vect, dta = NULL, choice = "obs") {
   }else{return(G)}
 
 }
-
