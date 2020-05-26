@@ -23,7 +23,7 @@ proj.lgl2 <- function(x, c, G) {
     gpmax <- which(absv == max(absv))
     x_prox <- rep (0, length(x))
 
-    for (i in 1:length(gpmax)) {
+    for (i in gpmax) {
       iota <- G[[i]]
       x_prox[iota] <- normalize(x[iota])
     }
