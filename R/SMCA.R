@@ -69,5 +69,7 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "rand", v.partition = F
                var = var,
                ind = ind,
                other =list(Xinit = Y,
-                           Xdisj = X)))
+                           Xdisj = X,
+                           Gcol = Gcol,
+                           Grow = Grow)))
 }

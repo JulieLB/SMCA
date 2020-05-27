@@ -22,23 +22,40 @@ On crée une partition des individus sur les villes et des modalités sur les va
 
 ```{r}
 c1 <- 1
-c2 <- 1
+c2 <- 1.7
 Gvar <- partition_variables(cheese)
-
+# vect <- sample(c("a", "b"), size = ncol(cheese), replace = T)
+# Gvar <- partition_select(vect, cheese, choice = "var")
 Gobs <- partition_select (cheese [,3])
 
 ```
 
 ```{r}
-res.smca1 <- SMCA(cheese, c1 = c1, c2 = c2, Gcol = Gvar, Grow = Gobs)
+res.smca1 <- SMCA(cheese, c1 = c1, c2 = c2, Gcol = Gvar, Grow = Gobs, n = 10)
+# res.smca2 <- SMCA(cheese, c1 = c1, c2 = c2, n = 10, Grow = Gobs)
+
+```
+
+```{r}
+screeplot_new(res.smca1, sort.comp = F)
+screeplot_new(res.smca2)
+
 ```
 
 
 ```{r}
 
-plot_SMCA(res.smca1, aff.noms = T) + theme(legend.position = "none")
+plot_SMCA(res.smca1, habillage = 3)
 plot_SMCA(res.smca1, choix = "var", aff.noms = T) + theme(legend.position = "none")
 plot_SMCA(res.smca1, choix = "mod", aff.noms = T) + theme(legend.position = "none")
+
+
+```
+```{r}
+
+plot_SMCA(res.smca2, habillage = 3)
+plot_SMCA(res.smca2, choix = "var", aff.noms = T) + theme(legend.position = "none")
+plot_SMCA(res.smca2, choix = "mod", aff.noms = T) + theme(legend.position = "none")
 
 
 ```

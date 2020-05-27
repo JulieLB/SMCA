@@ -35,6 +35,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     alpha <- 0.5
     size <- res$var$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$var$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
     ix_label <- which(res$var$contrib[,axes[1]] > 0.3 | res$var$contrib[,axes[2]] > 0.3)
+    if (!is.null(res$other$Gcol)) {hab <- unlist(lapply(1:length(res$other$Gcol), function(i) {res$other$Gcol[[i]] <- rep(colnames(res$other$Xinit)[i], length(res$other$Gcol[[i]]))}))}
 
   }else if (choix == "var") {
     coord <- res$var$eta2
@@ -69,6 +70,11 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
   if (!is.null(habillage) && (habillage %in% 1:ncol(res$other$Xinit))) {
     coord <- cbind (coord, hab = res$other$Xinit[,habillage])
     aff.points <- geom_point(aes(size = size, colour = factor(hab)), shape = shap, alpha = alpha)
+    if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
+  } else if (choix == "mod" && !is.null(res$other$Gcol)){
+    coord <- cbind (coord, hab = hab)
+    aff.points <- geom_point(aes(size = size, colour = factor(hab)), shape = shap, alpha = alpha)
+    if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
   }
 
   coord$x <- as.numeric(as.vector(coord$x))
