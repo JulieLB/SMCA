@@ -26,6 +26,15 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "rand", v.partition = F
     res <- gpmd(Y = Y, X = X, K = n, sumabsu = c1, sumabsv = c2)
   }
 
+  if (sum(sort(res$D, d = T) != res$D) > 0) {
+    new.order <- order(res$D, decreasing = T)
+    res$D <- sort(res$D, d = T)
+    res$P <- res$P[, new.order]
+    res$Q <- res$Q[, new.order]
+
+  }
+
+
   eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = length(res$D)),
                              eigenvalue = res$D,
                              percentageOfVariance = sapply (1:length(res$D), function(j){res$D[j]/sum(res$D)*100}),
