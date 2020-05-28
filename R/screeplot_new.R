@@ -3,6 +3,8 @@
 #' @param res the result of SMCA or SPCA
 #' @param aff.mean If TRUE, adds an horizontal line corresponding to the mean of the eigen values.
 #' @param sort.comp If TRUE (default), the components are sorted by decreasing size.
+#' @param title by default "Scree plot".
+#' @param ncomp The number of components to show.
 #'
 #' @return A ggplot2 object
 #' @export
