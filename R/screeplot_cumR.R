@@ -27,8 +27,11 @@ screeplot_cum <- function(res, title = "Scree plot", ncomp = "all", names.res = 
     gather(key = "variable", value = "value", -dim)
 
   screeplot <- ggplot2::ggplot(df, aes(x = dim, y = value)) +
-    geom_line(aes(color = variable, linetype = variable)) +
+    geom_line(aes(color = variable), size = 1) +
     geom_point(aes(color = variable)) +
+    labs(title =  title,
+         x = "Components",
+         y = "Percentage of explained variance") +
     #scale_color_manual(values = c("darkred", "steelblue"))
     theme_light()
 
