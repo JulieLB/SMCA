@@ -66,7 +66,7 @@ cgsvd <- function (Y,
   res <- csvd(X_csvd, R, c1 = c1, c2 = c2, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
 
   Qtilde <- res$Q
-  D <- res$D
+  D <- res$D^2
   Ptilde <- res$P #data.matrix(Xtilde %*% Qtilde %*% diag(sqrt(D) ^ -1))
 
   Q <- t(t(Qtilde) %*% diag((diag(W) ^ (-1 / 2))))#t(t(Qtilde) %*% (W %^% (-1 / 2)))
