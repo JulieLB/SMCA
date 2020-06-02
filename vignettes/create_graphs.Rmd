@@ -125,30 +125,31 @@ ggarrange(p1, p2, p3)
 
 #print all the screeplots of a type of analysis on the same plot
 ```{r, echo=FALSE}
-res <- data.frame(res.1.1.city$eig$percentageOfVariance,
-                  res.1.2.city$eig$percentageOfVariance,
-                  res.1.3.city$eig$percentageOfVariance,
-                  res.2.1.city$eig$percentageOfVariance,
-                  res.2.2.city$eig$percentageOfVariance,
-                  res.2.3.city$eig$percentageOfVariance,
-                  res.3.1.city$eig$percentageOfVariance,
-                  res.3.2.city$eig$percentageOfVariance,
-                  )
 
-names <- sapply(1:ncol(res), function(i) {substr(colnames(res)[i], 5, 12)})
+res <- data.frame(res.1.1.city$eig$eigenvalue/Itot,
+                  res.1.2.city$eig$eigenvalue/Itot,
+                  res.1.3.city$eig$eigenvalue/Itot,
+                  res.2.1.city$eig$eigenvalue/Itot,
+                  res.2.2.city$eig$eigenvalue/Itot,
+                  res.2.3.city$eig$eigenvalue/Itot,
+                  res.3.1.city$eig$eigenvalue/Itot,
+                  res.3.2.city$eig$eigenvalue/Itot,
+                  res.3.3$eig$eigenvalue/Itot)
+
+names <- c(sapply(1:(ncol(res)-1), function(i) {substr(colnames(res)[i], 5, 12)}), "3.3")
 
 screeplot_cum(res, names.res = names, title = "Screeplots with city constraint")
 
 
-res2 <- data.frame(res.1.1$eig$percentageOfVariance,
-                  res.1.2$eig$percentageOfVariance,
-                  res.1.3$eig$percentageOfVariance,
-                  res.2.1$eig$percentageOfVariance,
-                  res.2.2$eig$percentageOfVariance,
-                  res.2.3$eig$percentageOfVariance,
-                  res.3.1$eig$percentageOfVariance,
-                  res.3.2$eig$percentageOfVariance,
-                  res.3.3$eig$percentageOfVariance)
+res2 <- data.frame(res.1.1$eig$eigenvalue/Itot,
+                  res.1.2$eig$eigenvalue/Itot,
+                  res.1.3$eig$eigenvalue/Itot,
+                  res.2.1$eig$eigenvalue/Itot,
+                  res.2.2$eig$eigenvalue/Itot,
+                  res.2.3$eig$eigenvalue/Itot,
+                  res.3.1$eig$eigenvalue/Itot,
+                  res.3.2$eig$eigenvalue/Itot,
+                  res.3.3$eig$eigenvalue/Itot)
 
 names2 <- sapply(1:ncol(res2), function(i) {substr(colnames(res2)[i], 5, 7)})
 
