@@ -30,6 +30,9 @@ On crée une partition des individus sur les villes et des modalités sur les va
 ```{r}
 Gvar <- partition_variables(cheese)
 Gcity <- partition_select (cheese [,3])
+
+Itot <- 1/10*sum(sapply(1:10, function(i) {length(Gvar[[i]])-1}))
+
 ```
 
 Nous calculerons 4 types d'analyses différentes : 
