@@ -17,6 +17,7 @@ library(ggplot2)
 suppressMessages(library(tidyverse))
 library(ggrepel)
 knitr::opts_chunk$set(fig.width=12, fig.height=8) 
+library(tictoc)
 ```
 
 ```{r, echo=FALSE}
@@ -76,6 +77,7 @@ res.3.3 <- SMCA(cheese, c1 = c1[3], c2 = c2[3], n = 10, init="svd")
 L'ensemble des essais avec Groupement sur les variables.
 #The analysis with variable group constraint and without group constraint on the observations (row).
 ```{r}
+tic("analysis 2")
 res.1.1.var <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
 res.1.2.var <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
 res.1.3.var <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
@@ -84,13 +86,14 @@ res.2.2.var <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, n = 10, init="s
 res.2.3.var <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
 res.3.1.var <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
 res.3.2.var <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
-
+toc()
 ```
 
 3)res.city
 L'ensemble des essais avec un groupement sur les villes.
 #The analysis with group constraint on the rows (city) and without group constraint on the columns (variable).
 ```{r}
+tic("analysis 3")
 res.1.1.city <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Grow = Gcity, n = 10, init="svd")
 res.1.2.city <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Grow = Gcity, n = 10, init="svd")
 res.1.3.city <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Grow = Gcity, n = 10, init="svd")
@@ -99,12 +102,14 @@ res.2.2.city <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Grow = Gcity, n = 10, init=
 res.2.3.city <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Grow = Gcity, n = 10, init="svd")
 res.3.1.city <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Grow = Gcity, n = 10, init="svd")
 res.3.2.city <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Grow = Gcity, n = 10, init="svd")
+toc()
 ```
 
 4)res.city.var
 L'ensemble des essais avec un groupement sur les villes et sur les variables.
 #The analysis with group constraint on the rows (city) and on the columns (variable).
 ```{r}
+tic("analysis 4")
 res.1.1.city.var <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
 res.1.2.city.var <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
 res.1.3.city.var <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
@@ -113,9 +118,10 @@ res.2.2.city.var <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, Grow = Gci
 res.2.3.city.var <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
 res.3.1.city.var <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
 res.3.2.city.var <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+toc()
 ```
 
-
+# Screeplots
 #tests of the screeplots
 ```{r, echo=FALSE}
 p1 <- screeplot_new(res.1.1.city, title = "1.1.city")
@@ -159,24 +165,8 @@ names2 <- sapply(1:ncol(res2), function(i) {substr(colnames(res2)[i], 5, 7)})
 screeplot_cum(res2, names.res = names2, title = "Screeplots without group constraint")
 ```
 
-Affichage des individuals factor maps des analyses avec groupement par ville.
-#plot of the individuals factor map of the 
-```{r, echo=FALSE}
-p1.1 <- plot_SMCA(res.1.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
-p1.2 <- plot_SMCA(res.1.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
-p1.3 <- plot_SMCA(res.1.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.3")
-p2.1 <- plot_SMCA(res.2.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.1")
-p2.2 <- plot_SMCA(res.2.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.2")
-p2.3 <- plot_SMCA(res.2.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
-p3.1 <- plot_SMCA(res.3.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
-p3.2 <- plot_SMCA(res.3.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
-
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, common.legend = T)
-
-```
-
-
-Affichage des individuals factor maps des analyses sans groupement par ville.
+# Individuals factor map
+#plot of the individuals factor map of res
 ```{r, echo=FALSE}
 p1.1 <- plot_SMCA(res.1.1, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
 p1.2 <- plot_SMCA(res.1.2, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
@@ -192,22 +182,57 @@ ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = 
 
 ```
 
-Affichage des variables factor maps des analyses avec groupement par ville.
+#plot of the individuals factor map of res.var
 ```{r, echo=FALSE}
-p1.1 <- plot_SMCA(res.1.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
-p1.2 <- plot_SMCA(res.1.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.2")
-p1.3 <- plot_SMCA(res.1.3.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.3")
-p2.1 <- plot_SMCA(res.2.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
-p2.2 <- plot_SMCA(res.2.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.2")
-p2.3 <- plot_SMCA(res.2.3.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.3")
-p3.1 <- plot_SMCA(res.3.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
-p3.2 <- plot_SMCA(res.3.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
+p1.1 <- plot_SMCA(res.1.1.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2)
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
 
 ```
 
-Affichage des variables factor maps des analyses sans groupement par ville.
+#plot of the individuals factor map of res.city
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
+
+```
+
+#plot of the individuals factor map of res.city.var
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
+
+```
+
+# Variables factor maps
+
+#plot of the variables factor map of res
 ```{r, echo=FALSE}
 p1.1 <- plot_SMCA(res.1.1, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
 p1.2 <- plot_SMCA(res.1.2, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.2")
@@ -223,22 +248,57 @@ ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
 
 ```
 
-Affichage des categories factor maps des analyses avec groupement par ville.
+#plot of the variables factor map of res.var
 ```{r, echo=FALSE}
-p1.1 <- plot_SMCA(res.1.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
-p1.2 <- plot_SMCA(res.1.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.2")
-p1.3 <- plot_SMCA(res.1.3.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.3")
-p2.1 <- plot_SMCA(res.2.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
-p2.2 <- plot_SMCA(res.2.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.2")
-p2.3 <- plot_SMCA(res.2.3.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.3")
-p3.1 <- plot_SMCA(res.3.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
-p3.2 <- plot_SMCA(res.3.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
+p1.1 <- plot_SMCA(res.1.1.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2)
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
 
 ```
 
-Affichage des categories factor maps des analyses sans groupement par ville.
+#plot of the variables factor map of res.city
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+
+```
+
+#plot of the variables factor map of res.city.var
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+
+```
+
+# Categories factor map
+
+#plot of the categories factor map of res
 ```{r, echo=FALSE}
 p1.1 <- plot_SMCA(res.1.1, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
 p1.2 <- plot_SMCA(res.1.2, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.2")
@@ -253,6 +313,55 @@ p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggti
 ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
 
 ```
+#plot of the categories factor map of res.var
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.var, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.var, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.var, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+
+```
+
+#plot of the categories factor map of res.city
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+
+```
+
+
+#plot of the categories factor map of res.city.var
+```{r, echo=FALSE}
+p1.1 <- plot_SMCA(res.1.1.city.var, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city.var, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city.var, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city.var, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
+p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
+
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+
+```
+
 
 ```{r}
 # plot_SMCA(res.smca1, habillage = 3)
