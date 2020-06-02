@@ -25,51 +25,98 @@ data(cheese)
 ```
 
 On crée une partition des individus sur les villes et des modalités sur les variables. 
+#We create a partition of the individuals based on the variable city, and a partition on the categories based on the variables. 
 
 ```{r}
 Gvar <- partition_variables(cheese)
 Gcity <- partition_select (cheese [,3])
 
 Itot <- 1/10*sum(sapply(1:10, function(i) {length(Gvar[[i]])-1}))
+
 ```
+
+Nous calculerons 4 types d'analyses différentes : 
+- sans contraintes de groupe;
+- contrainte de groupe sur les colonnes (groupement des modalités par variable);
+- contrainte de groupe sur les rangs (groupement des individus sur les rangs);
+- contrainte de groupe sur les rangs et sur les colonnes.
+
+#We will compute 4 types of analysis : 
+#- no group constraint, res;
+#- a group constraint on the columns (grouping categories by variable), res.var;
+#- a group constraint on the rows (grouping the individuals by city), res.city;
+#-  a group constraint on both the rows and the columns, res.var.city.
 
 ```{r}
 j <- length(unlist(Gvar))
 i <- nrow(cheese)
 c1 <- c(1, 0.5*sqrt(i), sqrt(i))
 c2 <- c(1, 0.5*sqrt(j), sqrt(j))
-
-# ggsave(filename = "SP1", plot = a, path = "/Users/julieleborgne/Documents/presSMCAgraphs", device = "pdf")
 ```
 
 
-L'ensemble des essais sans Groupement sur les observations.
+1)res
+L'ensemble des essais sans contraintes de Groupe.
+#The analysis without group constraints.
 ```{r}
-res.1.1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
-res.1.2 <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
-res.1.3 <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
-res.2.1 <- SMCA(cheese, c1 = c1[2], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
-res.2.2 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
-res.2.3 <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
-res.3.1 <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
-res.3.2 <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
-res.3.3 <- SMCA(cheese, c1 = c1[3], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
+res.1.1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], n = 10, init="svd")
+res.1.2 <- SMCA(cheese, c1 = c1[1], c2 = c2[2], n = 10, init="svd")
+res.1.3 <- SMCA(cheese, c1 = c1[1], c2 = c2[3], n = 10, init="svd")
+res.2.1 <- SMCA(cheese, c1 = c1[2], c2 = c2[1], n = 10, init="svd")
+res.2.2 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], n = 10, init="svd")
+res.2.3 <- SMCA(cheese, c1 = c1[2], c2 = c2[3], n = 10, init="svd")
+res.3.1 <- SMCA(cheese, c1 = c1[3], c2 = c2[1], n = 10, init="svd")
+res.3.2 <- SMCA(cheese, c1 = c1[3], c2 = c2[2], n = 10, init="svd")
+res.3.3 <- SMCA(cheese, c1 = c1[3], c2 = c2[3], n = 10, init="svd")
 
 ```
 
-L'ensemble des essais avec une groupement sur les villes.
+
+2)res.var
+L'ensemble des essais avec Groupement sur les variables.
+#The analysis with variable group constraint and without group constraint on the observations (row).
 ```{r}
-res.1.1.city <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.1.2.city <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.1.3.city <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.2.1.city <- SMCA(cheese, c1 = c1[2], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.2.2.city <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.2.3.city <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.3.1.city <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.3.2.city <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.1.1.var <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
+res.1.2.var <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
+res.1.3.var <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
+res.2.1.var <- SMCA(cheese, c1 = c1[2], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
+res.2.2.var <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
+res.2.3.var <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Gcol = Gvar, n = 10, init="svd")
+res.3.1.var <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
+res.3.2.var <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
+
+```
+
+3)res.city
+L'ensemble des essais avec un groupement sur les villes.
+#The analysis with group constraint on the rows (city) and without group constraint on the columns (variable).
+```{r}
+res.1.1.city <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Grow = Gcity, n = 10, init="svd")
+res.1.2.city <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Grow = Gcity, n = 10, init="svd")
+res.1.3.city <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Grow = Gcity, n = 10, init="svd")
+res.2.1.city <- SMCA(cheese, c1 = c1[2], c2 = c2[1], Grow = Gcity, n = 10, init="svd")
+res.2.2.city <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Grow = Gcity, n = 10, init="svd")
+res.2.3.city <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Grow = Gcity, n = 10, init="svd")
+res.3.1.city <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Grow = Gcity, n = 10, init="svd")
+res.3.2.city <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Grow = Gcity, n = 10, init="svd")
+```
+
+4)res.city.var
+L'ensemble des essais avec un groupement sur les villes et sur les variables.
+#The analysis with group constraint on the rows (city) and on the columns (variable).
+```{r}
+res.1.1.city.var <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.1.2.city.var <- SMCA(cheese, c1 = c1[1], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.1.3.city.var <- SMCA(cheese, c1 = c1[1], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.2.1.city.var <- SMCA(cheese, c1 = c1[2], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.2.2.city.var <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.2.3.city.var <- SMCA(cheese, c1 = c1[2], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.3.1.city.var <- SMCA(cheese, c1 = c1[3], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.3.2.city.var <- SMCA(cheese, c1 = c1[3], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
 ```
 
 
+#tests of the screeplots
 ```{r, echo=FALSE}
 p1 <- screeplot_new(res.1.1.city, title = "1.1.city")
 p2 <- screeplot_new(res.2.2.city, title = "2.2.city")
@@ -78,7 +125,10 @@ p3 <- screeplot_new(res.3.3, title = "3.3")
 ggarrange(p1, p2, p3)
 ```
 
+
+#print all the screeplots of a type of analysis on the same plot
 ```{r, echo=FALSE}
+
 res <- data.frame(res.1.1.city$eig$eigenvalue/Itot,
                   res.1.2.city$eig$eigenvalue/Itot,
                   res.1.3.city$eig$eigenvalue/Itot,
@@ -106,10 +156,11 @@ res2 <- data.frame(res.1.1$eig$eigenvalue/Itot,
 
 names2 <- sapply(1:ncol(res2), function(i) {substr(colnames(res2)[i], 5, 7)})
 
-screeplot_cum(res2, names.res = names2, title = "Screeplots without city constraint")
+screeplot_cum(res2, names.res = names2, title = "Screeplots without group constraint")
 ```
 
 Affichage des individuals factor maps des analyses avec groupement par ville.
+#plot of the individuals factor map of the 
 ```{r, echo=FALSE}
 p1.1 <- plot_SMCA(res.1.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
 p1.2 <- plot_SMCA(res.1.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
@@ -119,9 +170,8 @@ p2.2 <- plot_SMCA(res.2.2.city, habillage = 3)+ theme(legend.position = "none")+
 p2.3 <- plot_SMCA(res.2.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
 p3.1 <- plot_SMCA(res.3.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
 p3.2 <- plot_SMCA(res.3.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
-p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, common.legend = T)
 
 ```
 
@@ -152,9 +202,8 @@ p2.2 <- plot_SMCA(res.2.2.city, choix = "var", aff.noms = T)+ theme(legend.posit
 p2.3 <- plot_SMCA(res.2.3.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("2.3")
 p3.1 <- plot_SMCA(res.3.1.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
 p3.2 <- plot_SMCA(res.3.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
-p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2)
 
 ```
 
@@ -184,9 +233,8 @@ p2.2 <- plot_SMCA(res.2.2.city, choix = "mod")+ theme(legend.position = "none")+
 p2.3 <- plot_SMCA(res.2.3.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("2.3")
 p3.1 <- plot_SMCA(res.3.1.city, choix = "mod", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.1")
 p3.2 <- plot_SMCA(res.3.2.city, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
-p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2)
 
 ```
 
@@ -202,7 +250,7 @@ p3.1 <- plot_SMCA(res.3.1, choix = "mod", aff.noms = T)+ theme(legend.position =
 p3.2 <- plot_SMCA(res.3.2, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
-a<-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
 
 ```
 
