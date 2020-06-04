@@ -20,6 +20,8 @@
 SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "rand", v.partition = F, Grow = NULL, Gcol = NULL) {
   X <- tab_disjonctif(Y)
 
+  if (n > min(ncol(X), nrow(X))) n <- min(ncol(X), nrow(X))
+
   if (meth =='cgsvd') {
     res <- cgsvd(Y = Y, X = X, c1 = c1, c2 = c2, R = n, init = init, v.partition = v.partition, Grow = Grow, Gcol = Gcol)
   }else if (meth =='gpmd') {
@@ -34,10 +36,12 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "rand", v.partition = F
 
   }
 
+  if(is.null(Gcol)) {Gcol <- partition_variables(Y)}
+  Itot <- 1/length(Gcol)*sum(sapply(1:length(Gcol), function(i) {length(Gcol[[i]])-1}))
 
   eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = length(res$D)),
                              eigenvalue = res$D,
-                             percentageOfVariance = sapply (1:length(res$D), function(j){res$D[j]/sum(res$D)*100}),
+                             percentageOfVariance = sapply (1:length(res$D), function(j){res$D[j]/Itot*100}),
                              cumulatedPercentageOfVariance = cumsum(sapply (1:length(res$D), function(j){res$D[j]/sum(res$D)*100}))
                              )
                        )

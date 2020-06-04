@@ -11,6 +11,9 @@ output:
 library(ggplot2)
 library(SMCA)
 library(ggpubr)
+library(ggrepel)
+suppressMessages(library(tidyverse))
+
 ```
 
 This vignette illustrates the use of the SMCA package to make a sparsified analysis of a categorical data set.
@@ -37,10 +40,13 @@ dta <- data.frame(age = c(1, 1, 2, 2, 3, 3),
 We use the function `MCA()`and `SMCA()` of the package `SMCA`.
 In order to sparsify a MCA, we need to introduce a row contraint (c1) and a column contraint (c2). Their values can vary from 1 to the root square of the number of rows (c1) or the number of categories (c2). For this example, we choose the mean value.
 
+We can also group 
+
 ```{r}
 
 c1 <- sqrt(nrow(dta))/2
 c2 <- sqrt(20)/2
+Gvar <- partition_variables(dta)
 
 res1 <- SMCA::MCA(dta, n = 8)
 res2 <- SMCA::SMCA(dta, c1 = c1, c2 = c2, n = 8)
@@ -73,7 +79,7 @@ On the categories factor map, we can see that many categories are well represent
 ## Plot the MCA results
 
 ```{r}
-plot_SMCA(res2, choix = "ind", aff.noms = T)
+plot_SMCA(res2, choix = "ind", aff.noms = T, habillage = 1)
 plot_SMCA(res2, choix = "mod", aff.noms = T)
 plot_SMCA(res2, choix = "var", aff.noms = T)
 

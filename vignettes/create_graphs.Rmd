@@ -383,11 +383,11 @@ p3.1 <- plot_SMCA(res.3.1, choix = "mod", aff.noms = T)+ theme(legend.position =
 p3.2 <- plot_SMCA(res.3.2, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-# ggsave("CatFactorMap",
-#        plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
-#        path = "C:/Users/hub/Documents/figures_cheese_20200603",
-#        device = "pdf")
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggsave("CatFactorMap",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 #plot of the categories factor map of res.var
 ```{r, echo=FALSE}
