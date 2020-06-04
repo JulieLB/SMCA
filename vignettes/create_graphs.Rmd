@@ -121,15 +121,17 @@ toc()
 L'ensemble des essais avec un groupement sur les villes et sur les variables.
 #The analysis with group constraint on the rows (city) and on the columns (variable).
 ```{r}
+
+Gvar2 <- partition_variables(cheese[,-3])
 tic("analysis 4")
-res.1.1.city.var <- SMCA(cheese[,-3], c1 = c1[1], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.1.2.city.var <- SMCA(cheese[,-3], c1 = c1[1], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.1.3.city.var <- SMCA(cheese[,-3], c1 = c1[1], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.2.1.city.var <- SMCA(cheese[,-3], c1 = c1[2], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.2.2.city.var <- SMCA(cheese[,-3], c1 = c1[2], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.2.3.city.var <- SMCA(cheese[,-3], c1 = c1[2], c2 = c2[3], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.3.1.city.var <- SMCA(cheese[,-3], c1 = c1[3], c2 = c2[1], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
-res.3.2.city.var <- SMCA(cheese[,-3], c1 = c1[3], c2 = c2[2], Gcol = Gvar, Grow = Gcity, n = 10, init="svd")
+res.1.1.city.var <- SMCA(cheese[,-3], c1 = c1[1], c2 = c2[1], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.1.2.city.var <- SMCA(cheese[,-3], c1 = c1[1], c2 = c2[2], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.1.3.city.var <- SMCA(cheese[,-3], c1 = c1[1], c2 = c2[3], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.2.1.city.var <- SMCA(cheese[,-3], c1 = c1[2], c2 = c2[1], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.2.2.city.var <- SMCA(cheese[,-3], c1 = c1[2], c2 = c2[2], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.2.3.city.var <- SMCA(cheese[,-3], c1 = c1[2], c2 = c2[3], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.3.1.city.var <- SMCA(cheese[,-3], c1 = c1[3], c2 = c2[1], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
+res.3.2.city.var <- SMCA(cheese[,-3], c1 = c1[3], c2 = c2[2], Gcol = Gvar2, Grow = Gcity, n = 10, init="svd")
 toc()
 ```
 
@@ -146,23 +148,7 @@ ggarrange(p1, p2, p3)
 
 #print all the screeplots of a type of analysis on the same plot
 ```{r, echo=FALSE}
-
-res <- data.frame(res.1.1.city$eig$eigenvalue/Itot,
-                  res.1.2.city$eig$eigenvalue/Itot,
-                  res.1.3.city$eig$eigenvalue/Itot,
-                  res.2.1.city$eig$eigenvalue/Itot,
-                  res.2.2.city$eig$eigenvalue/Itot,
-                  res.2.3.city$eig$eigenvalue/Itot,
-                  res.3.1.city$eig$eigenvalue/Itot,
-                  res.3.2.city$eig$eigenvalue/Itot,
-                  res.3.3$eig$eigenvalue/Itot)
-
-names <- c(sapply(1:(ncol(res)-1), function(i) {substr(colnames(res)[i], 5, 12)}), "3.3")
-
-screeplot_cum(res, names.res = names, title = "Screeplots with city constraint")
-
-
-res2 <- data.frame(res.1.1$eig$eigenvalue/Itot,
+res <- data.frame(res.1.1$eig$eigenvalue/Itot,
                   res.1.2$eig$eigenvalue/Itot,
                   res.1.3$eig$eigenvalue/Itot,
                   res.2.1$eig$eigenvalue/Itot,
@@ -172,9 +158,56 @@ res2 <- data.frame(res.1.1$eig$eigenvalue/Itot,
                   res.3.2$eig$eigenvalue/Itot,
                   res.3.3$eig$eigenvalue/Itot)
 
-names2 <- sapply(1:ncol(res2), function(i) {substr(colnames(res2)[i], 5, 7)})
+names1 <- sapply(1:ncol(res), function(i) {substr(colnames(res)[i], 5, 7)})
+screeplot_cum(res, names.res = names1, title = "Screeplots without group constraint")
 
-screeplot_cum(res2, names.res = names2, title = "Screeplots without group constraint")
+
+res2 <- data.frame(res.1.1.city$eig$eigenvalue/Itot,
+                  res.1.2.city$eig$eigenvalue/Itot,
+                  res.1.3.city$eig$eigenvalue/Itot,
+                  res.2.1.city$eig$eigenvalue/Itot,
+                  res.2.2.city$eig$eigenvalue/Itot,
+                  res.2.3.city$eig$eigenvalue/Itot,
+                  res.3.1.city$eig$eigenvalue/Itot,
+                  res.3.2.city$eig$eigenvalue/Itot,
+                  res.3.3$eig$eigenvalue/Itot)
+
+names2 <- c(sapply(1:(ncol(res2)-1), function(i) {substr(colnames(res2)[i], 5, 12)}), "3.3")
+screeplot_cum(res2, names.res = names2, title = "Screeplots with city constraint")
+
+res3 <- data.frame(res.1.1.var$eig$eigenvalue/Itot,
+                  res.1.2.var$eig$eigenvalue/Itot,
+                  res.1.3.var$eig$eigenvalue/Itot,
+                  res.2.1.var$eig$eigenvalue/Itot,
+                  res.2.2.var$eig$eigenvalue/Itot,
+                  res.2.3.var$eig$eigenvalue/Itot,
+                  res.3.1.var$eig$eigenvalue/Itot,
+                  res.3.2.var$eig$eigenvalue/Itot,
+                  res.3.3$eig$eigenvalue/Itot)
+
+names3 <- c(sapply(1:(ncol(res3)-1), function(i) {substr(colnames(res3)[i], 5, 12)}), "3.3")
+screeplot_cum(res3, names.res = names3, title = "Screeplots with variable constraint")
+
+
+res4 <- data.frame(res.1.1.city.var$eig$eigenvalue/Itot,
+                  res.1.2.city.var$eig$eigenvalue/Itot,
+                  res.1.3.city.var$eig$eigenvalue/Itot,
+                  res.2.1.city.var$eig$eigenvalue/Itot,
+                  res.2.2.city.var$eig$eigenvalue/Itot,
+                  res.2.3.city.var$eig$eigenvalue/Itot,
+                  res.3.1.city.var$eig$eigenvalue/Itot,
+                  res.3.2.city.var$eig$eigenvalue/Itot,
+                  res.3.3$eig$eigenvalue/Itot)
+
+names4 <- c(sapply(1:(ncol(res4)-1), function(i) {substr(colnames(res4)[i], 5, 12)}), "3.3")
+screeplot_cum(res4, names.res = names4, title = "Screeplots with city and variable constraint")
+
+
+ggsave("ScreeCum_cityvar",
+       plot = screeplot_cum(res4, names.res = names4, title = "Screeplots with city and variable constraint"),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
+
 ```
 
 # Individuals factor map
@@ -192,6 +225,10 @@ p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggti
 
 ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
 
+# ggsave("IndFactorMap",
+#        plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T),
+#        path = "C:/Users/hub/Documents/figures_cheese_20200603",
+#        device = "pdf")
 ```
 
 #plot of the individuals factor map of res.var
@@ -206,8 +243,11 @@ p3.1 <- plot_SMCA(res.3.1.var, habillage = 3)+ theme(legend.position = "none")+ 
 p3.2 <- plot_SMCA(res.3.2.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
-
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
+# ggsave("IndFactorMap_var",
+#        plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T),
+#        path = "C:/Users/hub/Documents/figures_cheese_20200603",
+#        device = "pdf")
 ```
 
 #plot of the individuals factor map of res.city
@@ -222,8 +262,12 @@ p3.1 <- plot_SMCA(res.3.1.city, habillage = 3)+ theme(legend.position = "none")+
 p3.2 <- plot_SMCA(res.3.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
 
+ggsave("IndFactorMap_city",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 #plot of the individuals factor map of res.city.var
@@ -238,8 +282,12 @@ p3.1 <- plot_SMCA(res.3.1.city.var, habillage = 3)+ theme(legend.position = "non
 p3.2 <- plot_SMCA(res.3.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
 
+ggsave("IndFactorMap_var_city",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 # Variables factor maps
@@ -256,8 +304,12 @@ p3.1 <- plot_SMCA(res.3.1, choix = "var", aff.noms = T)+ theme(legend.position =
 p3.2 <- plot_SMCA(res.3.2, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
 
+ggsave("VarFactorMap",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 #plot of the variables factor map of res.var
@@ -272,8 +324,11 @@ p3.1 <- plot_SMCA(res.3.1.var, choix = "var", aff.noms = T)+ theme(legend.positi
 p3.2 <- plot_SMCA(res.3.2.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggsave("VarFactorMap_var",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 #plot of the variables factor map of res.city
@@ -288,8 +343,11 @@ p3.1 <- plot_SMCA(res.3.1.city, choix = "var", aff.noms = T)+ theme(legend.posit
 p3.2 <- plot_SMCA(res.3.2.city, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggsave("VarFactorMap_city",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 #plot of the variables factor map of res.city.var
@@ -304,8 +362,11 @@ p3.1 <- plot_SMCA(res.3.1.city.var, choix = "var", aff.noms = T)+ theme(legend.p
 p3.2 <- plot_SMCA(res.3.2.city.var, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, choix = "var", aff.noms = T)+ theme(legend.position = "none")+ ggtitle("3.3")
 
-ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+# ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
+ggsave("VarFactorMap_cityvar",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 # Categories factor map
@@ -323,7 +384,10 @@ p3.2 <- plot_SMCA(res.3.2, choix = "mod")+ theme(legend.position = "none")+ ggti
 p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
 ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+# ggsave("CatFactorMap",
+#        plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+#        path = "C:/Users/hub/Documents/figures_cheese_20200603",
+#        device = "pdf")
 ```
 #plot of the categories factor map of res.var
 ```{r, echo=FALSE}
@@ -338,7 +402,10 @@ p3.2 <- plot_SMCA(res.3.2.var, choix = "mod")+ theme(legend.position = "none")+ 
 p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
 ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+# ggsave("CatFactorMap_var",
+#        plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+#        path = "C:/Users/hub/Documents/figures_cheese_20200603",
+#        device = "pdf")
 ```
 
 #plot of the categories factor map of res.city
@@ -354,7 +421,10 @@ p3.2 <- plot_SMCA(res.3.2.city, choix = "mod")+ theme(legend.position = "none")+
 p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
 ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+ggsave("CatFactorMap_city",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 
@@ -371,7 +441,10 @@ p3.2 <- plot_SMCA(res.3.2.city.var, choix = "mod")+ theme(legend.position = "non
 p3.3 <- plot_SMCA(res.3.3, choix = "mod")+ theme(legend.position = "none")+ ggtitle("3.3")
 
 ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3)
-
+ggsave("CatFactorMap_cityvar",
+       plot = ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3),
+       path = "C:/Users/hub/Documents/figures_cheese_20200603",
+       device = "pdf")
 ```
 
 

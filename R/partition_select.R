@@ -20,6 +20,7 @@ partition_select <- function (vect, dta = NULL, choice = "obs") {
 
   lev <- levels(as.factor(vect))
   G <- lapply(lev, function(i) {G <- as.vector(which(vect==i))})
+  names(G) <- lev
 
   if (choice == "var") {
     G2 <- list()
