@@ -41,8 +41,8 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "rand", v.partition = F
 
   eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = length(res$D)),
                              eigenvalue = res$D,
-                             percentageOfVariance = sapply (1:length(res$D), function(j){res$D[j]/Itot*100}),
-                             cumulatedPercentageOfVariance = cumsum(sapply (1:length(res$D), function(j){res$D[j]/sum(res$D)*100}))
+                             percentageOfVariance = res$D / Itot * 100,
+                             cumulatedPercentageOfVariance = cumsum(res$D / Itot * 100)
                              )
                        )
 

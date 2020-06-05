@@ -19,13 +19,15 @@ MCA <- function(Y, n = 5) {
 
   res <- gsvd(Y = Y, X = X, R = n)
 
+  Gcol <- partition_variables(Y)
+  Itot <- 1/length(Gcol)*sum(sapply(1:length(Gcol), function(i) {length(Gcol[[i]])-1}))
+
   eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = length(res$D)),
                              eigenvalue = res$D,
-                             percentageOfVariance = sapply (1:length(res$D), function(j){res$D[j]/sum(res$D)*100}),
-                             cumulatedPercentageOfVariance = cumsum(sapply (1:length(res$D), function(j){res$D[j]/sum(res$D)*100}))
+                             percentageOfVariance = res$D / Itot * 100,
+                             cumulatedPercentageOfVariance = cumsum(res$D / Itot * 100)
   )
   )
-
 
   #individus
   F <- res$P %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$r)^(-1/2)) %*% res$P %*% diag(sqrt(res$D))[,1:n]

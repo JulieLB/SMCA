@@ -3,11 +3,13 @@ title: "SMCA_vignette"
 author: "Julie Le Borgne"
 date: "14/05/2020"
 output:
-  word_document: default
   html_document: default
+  word_document: default
+  fig_width: 6 
+  fig_height: 4
 ---
 
-```{r loadingPackages}
+```{r loadingPackages, echo=FALSE}
 library(ggplot2)
 library(SMCA)
 library(ggpubr)
@@ -56,70 +58,79 @@ We will now compare the results of a MCA and a SMCA.
 
 ## Screeplot of the MCA and SMCA
 We use the function `screeplot_new()` of `SMCA`.
-```{r}
+```{r, echo=F}
 screeplot_new(res1, title = "Scree plot MCA", aff.mean = T)
 screeplot_new(res2, title = "Scree plot SMCA", aff.mean = T)
 
 ```
 We can see that, with the sparsification, the first components are containing a smaller share of the variance. It is then necessary to study more components in order to interpret the results. 
 
-## Plot the MCA results
+## Plot the results
 
 We use the function `plot_SMCA` to plot the results. On this function, we can indicate which factor map we want to print (individuals, categores or variables factor map) and on which component (axes). The categories and individuals points' size depends on their contribution to the selected axis. It is also possible to color the individuals points according to a caracteristic (variable) with the option `habillage`
 
-```{r}
-plot_SMCA(res1, choix = "ind", aff.noms = T, habillage = 1)
-plot_SMCA(res1, choix = "mod", aff.noms = T)
-plot_SMCA(res1, choix = "var", aff.noms = T, title.precision = "(MCA)")
+Fist, we can compare the individuals factor map of the two analysis :
+```{r, echo=F}
+p1 <- plot_SMCA(res1, choix = "ind", aff.noms = T, habillage = 1) + theme(legend.position = "none")+ ggtitle("MCA")
+p2 <- plot_SMCA(res2, choix = "ind", aff.noms = T, habillage = 1) + theme(legend.position = "none")+ ggtitle("SMCA")
+p <- ggarrange(p1, p2, common.legend = T, legend = "bottom")
+annotate_figure(p, top = text_grob("Individuals Factor Map", face = "bold", size = 14))
+```
 
+Then, we can observe the categories factor map :
+```{r, echo=F}
+p1 <- plot_SMCA(res1, choix = "mod", aff.noms = T) + theme(legend.position = "none")+ ggtitle("MCA")
+p2 <- plot_SMCA(res2, choix = "mod", aff.noms = T) + theme(legend.position = "none")+ ggtitle("SMCA")
+p <- ggarrange(p1, p2, common.legend = T, legend = "bottom", heights = 10, widths = 10)
+annotate_figure(p, top = text_grob("Categories Factor Map", face = "bold", size = 14))
 ```
 
 On the categories factor map, we can see that many categories are well represented on the first 2 axis. The interest of sparsification is to reduce the number of categories and individuals responsible of the axis construction. The analysis is then easier to interpret.
+In the SMCA factor maps, there is only a few categories well represented in each axis.
 
-## Plot the MCA results
-
-```{r}
-plot_SMCA(res2, choix = "ind", aff.noms = T, habillage = 1)
-plot_SMCA(res2, choix = "mod", aff.noms = T)
-plot_SMCA(res2, choix = "var", aff.noms = T)
+We now look at the Variables Factor Map :
+```{r, echo=F, heights = 15, widths = 15}
+p1 <- plot_SMCA(res1, choix = "var", aff.noms = T) + theme(legend.position = "none")+ ggtitle("MCA")
+p2 <- plot_SMCA(res2, choix = "var", aff.noms = T) + theme(legend.position = "none")+ ggtitle("SMCA")
+p <- ggarrange(p1, p2, common.legend = T, legend = "bottom")
+annotate_figure(p, top = text_grob("Variables Factor Map", face = "bold", size = 14))
 
 ```
-In the SMCA factor maps, there is only a few categories well represented in each axis.
 
 ## Vary the constraints
 The issue is to determine which row and column contraints are optimal. We try several combination. For now, they are roughly chosen (the main objectif being an easier interpretation of the MCA).
-```{r}
-c1 <- seq(from = 1, to = sqrt(nrow(dta)), length = 3)
-c2 <- seq(from = 1, to = sqrt(20), length = 5)
-
-k <- 1
-p <- list()
-for (i in 1:length(c1)) {
-  for (j in 1:length(c2)) {
-    res <- SMCA(dta, c1 = c1[i], c2 = c2[j])
-    p[[k]] <- plot_SMCA(res, choix = "mod", aff.noms = T, title.precision = paste("(c1 =", c1[i], ", c2 =", c2[j], ")", sep = " "))
-    k <- k + 1
-  }
-}
+```{r, echo=F}
+# c1 <- seq(from = 1, to = sqrt(nrow(dta)), length = 3)
+# c2 <- seq(from = 1, to = sqrt(20), length = 5)
+# 
+# k <- 1
+# p <- list()
+# for (i in 1:length(c1)) {
+#   for (j in 1:length(c2)) {
+#     res <- SMCA(dta, c1 = c1[i], c2 = c2[j])
+#     p[[k]] <- plot_SMCA(res, choix = "mod", aff.noms = T, title.precision = paste("(c1 =", round(c1[i], 3), ", c2 =", round(c2[j], 3), ")", sep = " ")) + theme(legend.position = "none")
+#     k <- k + 1
+#   }
+# }
 
 
 
 ```
 
 ```{r}
-p[[1]] 
-p[[2]]
-p[[3]]
-```
-```{r}
-p[[4]] 
-p[[5]]
-p[[6]]
-```
-
-
-```{r}
-p[[7]] 
-p[[8]]
-p[[9]]
+# p[[1]] 
+# p[[2]]
+# p[[3]]
+# ```
+# ```{r}
+# p[[4]] 
+# p[[5]]
+# p[[6]]
+# ```
+# 
+# 
+# ```{r}
+# p[[7]] 
+# p[[8]]
+# p[[9]]
 ```
