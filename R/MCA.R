@@ -13,6 +13,8 @@
 
 MCA <- function(Y, n = 5) {
 
+  if(sum(is.na(Y))>0) stop("Error. Missing values.")
+
   X <- tab_disjonctif(Y)
 
   if (n > min(ncol(X), nrow(X))) n <- min(ncol(X), nrow(X))
@@ -22,10 +24,10 @@ MCA <- function(Y, n = 5) {
   Gcol <- partition_variables(Y)
   Itot <- 1/length(Gcol)*sum(sapply(1:length(Gcol), function(i) {length(Gcol[[i]])-1}))
 
-  eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = length(res$D)),
-                             eigenvalue = res$D,
-                             percentageOfVariance = res$D / Itot * 100,
-                             cumulatedPercentageOfVariance = cumsum(res$D / Itot * 100)
+  eig <- as.data.frame(cbind(dim = seq(from = 1, by = 1, length = n),
+                             eigenvalue = res$D[1:n],
+                             percentageOfVariance = res$D[1:n] / Itot * 100,
+                             cumulatedPercentageOfVariance = cumsum(res$D[1:n] / Itot * 100)
   )
   )
 

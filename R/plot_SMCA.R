@@ -5,6 +5,8 @@
 #' @param choix With this options, we decide if we want the individual plot (choix = "ind") or the Categories plot (choix = "var")
 #' @param aff.noms If TRUE (default), the points names are shown
 #' @param habillage The number of the variable according to which we want to color the individuals points. If NULL (default), all the points will be of the same color.
+#' @param vect.habillage A vector containing the habillage you wish for you plot (it must be of the same length as the chosen plot number of points)
+#' @param title.precision Character strings to add a precision to the title.
 #'
 #' @return Returns a map (ggplot2) of the individuals or the categories with options.
 #' @export
@@ -15,7 +17,7 @@
 #' plot.SMCA(res, choix = "ind", aff.noms = F, habillage = 3)
 #' plot.SMCA(res, choix = "var", aff.noms = T)
 
-plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL, title.precision = NULL) {
+plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL, vect.habillage = NULL, title.precision = NULL) {
 
   #est ce qu'il s'agit d'un plot sur les individus ou sur les variables
   if (choix == "ind") {
@@ -77,6 +79,10 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
   } else if (choix == "mod"){
     coord <- cbind (coord, hab = hab)
+    aff.points <- geom_point(aes(size = size, colour = factor(hab)), shape = shap, alpha = alpha)
+    if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
+  } else if (!is.null(vect.habillage) && length(vect.habillage)==nrow(coord)){
+    coord <- cbind (coord, hab = vect.habillage)
     aff.points <- geom_point(aes(size = size, colour = factor(hab)), shape = shap, alpha = alpha)
     if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
   }
