@@ -252,14 +252,14 @@ p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggti
 
 #plot of the individuals factor map of res.city
 ```{r, echo=FALSE}
-p1.1 <- plot_SMCA(res.1.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
-p1.2 <- plot_SMCA(res.1.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
-p1.3 <- plot_SMCA(res.1.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.3")
-p2.1 <- plot_SMCA(res.2.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.1")
-p2.2 <- plot_SMCA(res.2.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.2")
-p2.3 <- plot_SMCA(res.2.3.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
-p3.1 <- plot_SMCA(res.3.1.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
-p3.2 <- plot_SMCA(res.3.2.city, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
+p1.1 <- plot_SMCA(res.1.1.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
 # ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)
@@ -272,14 +272,14 @@ ggsave("IndFactorMap_city",
 
 #plot of the individuals factor map of res.city.var
 ```{r, echo=FALSE}
-p1.1 <- plot_SMCA(res.1.1.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.1")
-p1.2 <- plot_SMCA(res.1.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.2")
-p1.3 <- plot_SMCA(res.1.3.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("1.3")
-p2.1 <- plot_SMCA(res.2.1.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.1")
-p2.2 <- plot_SMCA(res.2.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.2")
-p2.3 <- plot_SMCA(res.2.3.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("2.3")
-p3.1 <- plot_SMCA(res.3.1.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.1")
-p3.2 <- plot_SMCA(res.3.2.city.var, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.2")
+p1.1 <- plot_SMCA(res.1.1.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("1.1")
+p1.2 <- plot_SMCA(res.1.2.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("1.2")
+p1.3 <- plot_SMCA(res.1.3.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("1.3")
+p2.1 <- plot_SMCA(res.2.1.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("2.1")
+p2.2 <- plot_SMCA(res.2.2.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("2.2")
+p2.3 <- plot_SMCA(res.2.3.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("2.3")
+p3.1 <- plot_SMCA(res.3.1.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("3.1")
+p3.2 <- plot_SMCA(res.3.2.city.var, vect.habillage = cheese[,3])+ theme(legend.position = "none")+ ggtitle("3.2")
 p3.3 <- plot_SMCA(res.3.3, habillage = 3)+ theme(legend.position = "none")+ ggtitle("3.3")
 
 # ggarrange(p1.1, p1.2, p1.3, p2.1, p2.2, p2.3, p3.1, p3.2, p3.3, common.legend = T)

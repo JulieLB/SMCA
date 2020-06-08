@@ -46,7 +46,7 @@ We can also group
 
 ```{r}
 
-c1 <- sqrt(nrow(dta))/2
+c1 <- sqrt(nrow(dta))*0.8
 c2 <- sqrt(20)/2
 Gvar <- partition_variables(dta)
 
@@ -81,6 +81,8 @@ Then, we can observe the categories factor map :
 ```{r, echo=F}
 p1 <- plot_SMCA(res1, choix = "mod", aff.noms = T) + theme(legend.position = "none")+ ggtitle("MCA")
 p2 <- plot_SMCA(res2, choix = "mod", aff.noms = T) + theme(legend.position = "none")+ ggtitle("SMCA")
+# p3 <- plot_SMCA(res2, choix = "mod", aff.noms = T, axes = c(3,4)) + theme(legend.position = "none")+ ggtitle("SMCA")
+
 p <- ggarrange(p1, p2, common.legend = T, legend = "bottom", heights = 10, widths = 10)
 annotate_figure(p, top = text_grob("Categories Factor Map", face = "bold", size = 14))
 ```

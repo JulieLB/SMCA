@@ -4,6 +4,7 @@ G1 <- partition_select (cheese [,3])
 G2 <- partition_select (cheese [,1])
 G3 <- partition_select (cheese [,2])
 Gvar <- partition_variables(cheese)
+Gvar2 <- Gvar
 
 G <- list()
 for (i in 1:length(G1)) {
@@ -88,17 +89,17 @@ t <- toc()
 time_compare[1,3] <- t$toc - t$tic
 
 tic("analysis 1")
-res1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar, n = 10, init="svd")
+res1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Gcol = Gvar2, n = 10, init="svd")
 t <- toc()
 time_compare[1,4] <- t$toc - t$tic
 
 tic("analysis 1")
-res1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Grow = G1, Gcol = Gvar, n = 10, init="svd")
+res1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Grow = G1, Gcol = Gvar2, n = 10, init="svd")
 t <- toc()
 time_compare[1,5] <- t$toc - t$tic
 
 tic("analysis 1")
-res1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Grow = G, Gcol = Gvar, n = 10, init="svd")
+res1 <- SMCA(cheese, c1 = c1[1], c2 = c2[1], Grow = G, Gcol = Gvar2, n = 10, init="svd")
 t <- toc()
 time_compare[1,6] <- t$toc - t$tic
 
@@ -119,17 +120,17 @@ t <- toc()
 time_compare[2,3] <- t$toc - t$tic
 
 tic("analysis 2")
-res1 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar, n = 10, init="svd")
+res1 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Gcol = Gvar2, n = 10, init="svd")
 t <- toc()
 time_compare[2,4] <- t$toc - t$tic
 
 tic("analysis 2")
-res1 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Grow = G1, Gcol = Gvar, n = 10, init="svd")
+res1 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Grow = G1, Gcol = Gvar2, n = 10, init="svd")
 t <- toc()
 time_compare[2,5] <- t$toc - t$tic
 
 tic("analysis 2")
-res1 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Grow = G, Gcol = Gvar, n = 10, init="svd")
+res1 <- SMCA(cheese, c1 = c1[2], c2 = c2[2], Grow = G, Gcol = Gvar2, n = 10, init="svd")
 t <- toc()
 time_compare[2,6] <- t$toc - t$tic
 
