@@ -17,7 +17,7 @@
 #'data(cheese)
 #'SMCA(cheese, c1 = sqrt(nrow(cheese))/2, c2 = sqrt(ncol(cheese))/2, n = 4)
 
-SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "rand", v.partition = F, Grow = NULL, Gcol = NULL) {
+SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F, Grow = NULL, Gcol = NULL) {
 
   if(sum(is.na(Y))>0) stop("Error. Missing values.")
 

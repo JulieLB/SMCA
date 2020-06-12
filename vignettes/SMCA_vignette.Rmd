@@ -27,14 +27,24 @@ This vignette illustrates the use of the SMCA package to make a sparsified analy
 #Les personnes ont tendance à assortir leur chapeau avec la couleur de leurs yeux.
 
 ```{r}
+
 dta <- data.frame(age = c(1, 1, 2, 2, 3, 3), 
                 bureau = c("A", "A", "A", "A", "B", "B"), 
                 col.cheveux = c("brun", "brun", "brun", "blond", "blond", "brun"),
                 col.yeux = c("noisette", "brun", "bleu", "bleu", "bleu", "noisette"),
-                col.chapeau = c("vert", "jaune", "bleu", "jaune", "bleu", "vert"),
-                lunettes = c(1, 0, 0, 0, 1, 0),
-                glace = c(1, 0, 1, 0, 0, 1),
-                vin = c(0, 1, 0, 1, 1, 1))
+                col.chapeau = c("vert", "violet", "bleu", "bleu", "bleu", "vert"),
+                lunettes = c(1, 0, 0, 0, 1, 1))
+                # glace = c(1, 0, 1, 0, 0, 1),
+                # vin = c(0, 1, 0, 1, 1, 1))
+
+# dta <- data.frame(age = c(1, 1, 2, 2, 3, 3), 
+#                 bureau = c("A", "A", "A", "A", "B", "B"), 
+#                 col.cheveux = c("brun", "brun", "brun", "blond", "blond", "brun"),
+#                 col.yeux = c("noisette", "brun", "bleu", "bleu", "bleu", "noisette"),
+#                 col.chapeau = c("vert", "violet", "bleu", "violet", "bleu", "vert"),
+#                 lunettes = c(1, 0, 0, 0, 1, 0))
+#                 # glace = c(1, 0, 1, 0, 0, 1),
+#                 # vin = c(0, 1, 0, 1, 1, 1))
 ```
 
 # Apply a MCA and Sparse MCA
@@ -46,12 +56,12 @@ We can also group
 
 ```{r}
 
-c1 <- sqrt(nrow(dta))*0.8
-c2 <- sqrt(20)/2
+c1 <- sqrt(nrow(dta))*0.4
+c2 <- sqrt(15)*0.3
 Gvar <- partition_variables(dta)
 
 res1 <- SMCA::MCA(dta, n = 8)
-res2 <- SMCA::SMCA(dta, c1 = c1, c2 = c2, n = 8)
+res2 <- SMCA::SMCA(dta, Gcol = Gvar, c1 = c1, c2 = c2, n = 8)
 ```
 
 We will now compare the results of a MCA and a SMCA. 
@@ -71,20 +81,35 @@ We use the function `plot_SMCA` to plot the results. On this function, we can in
 
 Fist, we can compare the individuals factor map of the two analysis :
 ```{r, echo=F}
-p1 <- plot_SMCA(res1, choix = "ind", aff.noms = T, habillage = 1) + theme(legend.position = "none")+ ggtitle("MCA")
-p2 <- plot_SMCA(res2, choix = "ind", aff.noms = T, habillage = 1) + theme(legend.position = "none")+ ggtitle("SMCA")
-p <- ggarrange(p1, p2, common.legend = T, legend = "bottom")
+p1 <- plot_SMCA(res1, choix = "ind", aff.noms = F, habillage = 1) + theme(legend.position = "none")+ ggtitle("MCA")
+p2 <- plot_SMCA(res2, choix = "ind", aff.noms = F, habillage = 1) + theme(legend.position = "none")+ ggtitle("SMCA")
+p3 <- plot_SMCA(res2, choix = "ind", aff.noms = F, habillage = 1,  axes = c(3,4)) + theme(legend.position = "none")+ ggtitle("SMCA")
+p4 <- plot_SMCA(res2, choix = "ind", aff.noms = F, habillage = 1,  axes = c(5,6)) + theme(legend.position = "none")+ ggtitle("SMCA")
+
+p <- ggarrange(p1, p2 )#, common.legend = T, legend = "bottom")
 annotate_figure(p, top = text_grob("Individuals Factor Map", face = "bold", size = 14))
+
+# ggsave("IndFactorMap_23",
+#        plot = annotate_figure(p, top = text_grob("Individuals Factor Map", face = "bold", size = 14)),
+#        path = "C:/Users/hub/Documents/tests_bonhommes",
+#        device = "pdf")
+
 ```
 
 Then, we can observe the categories factor map :
 ```{r, echo=F}
 p1 <- plot_SMCA(res1, choix = "mod", aff.noms = T) + theme(legend.position = "none")+ ggtitle("MCA")
 p2 <- plot_SMCA(res2, choix = "mod", aff.noms = T) + theme(legend.position = "none")+ ggtitle("SMCA")
-# p3 <- plot_SMCA(res2, choix = "mod", aff.noms = T, axes = c(3,4)) + theme(legend.position = "none")+ ggtitle("SMCA")
+p3 <- plot_SMCA(res2, choix = "mod", aff.noms = T, axes = c(3,4)) + theme(legend.position = "none")+ ggtitle("SMCA")
+p4 <- plot_SMCA(res2, choix = "mod", aff.noms = T, axes = c(5,6)) + theme(legend.position = "none")+ ggtitle("SMCA")
 
-p <- ggarrange(p1, p2, common.legend = T, legend = "bottom", heights = 10, widths = 10)
+p <- ggarrange(p1, p2, p3, p4)#, p3, p4, common.legend = T, legend = "bottom", heights = 10, widths = 10)
 annotate_figure(p, top = text_grob("Categories Factor Map", face = "bold", size = 14))
+
+# ggsave("CatFactorMap_24",
+#        plot = annotate_figure(p, top = text_grob("Categories Factor Map", face = "bold", size = 14)),
+#        path = "C:/Users/hub/Documents/tests_bonhommes",
+#        device = "pdf")
 ```
 
 On the categories factor map, we can see that many categories are well represented on the first 2 axis. The interest of sparsification is to reduce the number of categories and individuals responsible of the axis construction. The analysis is then easier to interpret.
@@ -92,11 +117,16 @@ In the SMCA factor maps, there is only a few categories well represented in each
 
 We now look at the Variables Factor Map :
 ```{r, echo=F, heights = 15, widths = 15}
-p1 <- plot_SMCA(res1, choix = "var", aff.noms = T) + theme(legend.position = "none")+ ggtitle("MCA")
-p2 <- plot_SMCA(res2, choix = "var", aff.noms = T) + theme(legend.position = "none")+ ggtitle("SMCA")
-p <- ggarrange(p1, p2, common.legend = T, legend = "bottom")
+p1 <- plot_SMCA(res1, choix = "var", aff.noms = F) + theme(legend.position = "none")+ ggtitle("MCA")
+p2 <- plot_SMCA(res2, choix = "var", aff.noms = F) + theme(legend.position = "none")+ ggtitle("SMCA")
+p3 <- plot_SMCA(res2, choix = "var", aff.noms = F, axes = c(3,4)) + theme(legend.position = "none")+ ggtitle("SMCA")
+p4 <- plot_SMCA(res2, choix = "var", aff.noms = F, axes = c(5,6)) + theme(legend.position = "none")+ ggtitle("SMCA")
+p <- ggarrange(p1, p2)#, p3, p4)
 annotate_figure(p, top = text_grob("Variables Factor Map", face = "bold", size = 14))
-
+ggsave("VarFactorMap_23",
+       plot = annotate_figure(p, top = text_grob("Variables Factor Map", face = "bold", size = 14)),
+       path = "C:/Users/hub/Documents/tests_bonhommes",
+       device = "pdf")
 ```
 
 ## Vary the constraints
