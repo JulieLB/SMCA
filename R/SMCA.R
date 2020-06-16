@@ -17,7 +17,7 @@
 #'data(cheese)
 #'SMCA(cheese, c1 = sqrt(nrow(cheese))/2, c2 = sqrt(ncol(cheese))/2, n = 4)
 
-SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F, Grow = NULL, Gcol = NULL) {
+SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F, Grow = NULL, Gcol = NULL, order = T) {
 
   if(sum(is.na(Y))>0) stop("Error. Missing values.")
 
@@ -31,7 +31,7 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F,
     res <- gpmd(Y = Y, X = X, K = n, sumabsu = c1, sumabsv = c2)
   }
 
-  if (sum(sort(res$D, d = T) != res$D) > 0) {
+  if ((sum(sort(res$D, d = T) != res$D) > 0) & order) {
     new.order <- order(res$D, decreasing = T)
     res$D <- sort(res$D, d = T)
     res$P <- res$P[, new.order]
