@@ -7,6 +7,7 @@
 #' @param habillage The number of the variable according to which we want to color the individuals points. If NULL (default), all the points will be of the same color.
 #' @param vect.habillage A vector containing the habillage you wish for you plot (it must be of the same length as the chosen plot number of points)
 #' @param title.precision Character strings to add a precision to the title.
+#' @param alpha Indicate the opacity of the factor map points (default 0.5).
 #'
 #' @return Returns a map (ggplot2) of the individuals or the categories with options.
 #' @export
@@ -17,7 +18,7 @@
 #' plot.SMCA(res, choix = "ind", aff.noms = F, habillage = 3)
 #' plot.SMCA(res, choix = "var", aff.noms = T)
 
-plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL, vect.habillage = NULL, title.precision = NULL) {
+plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL, vect.habillage = NULL, title.precision = NULL, alpha = 0.5) {
 
   #est ce qu'il s'agit d'un plot sur les individus ou sur les variables
   if (choix == "ind") {
@@ -25,7 +26,6 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     title <- "Individuals factor map"
     col <- "blue"
     shap <- 16
-    alpha <- 0.5
     size <- res$ind$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$ind$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
     ix_label <- which(res$ind$contrib[,axes[1]] > 0.3 | res$ind$contrib[,axes[2]] > 0.3)
 
@@ -34,7 +34,6 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     title <- "Categories factor map"
     col <- "red"
     shap <- 17
-    alpha <- 0.5
     size <- res$var$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$var$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
     ix_label <- which(res$var$contrib[,axes[1]] > 0.3 | res$var$contrib[,axes[2]] > 0.3)
 
@@ -49,7 +48,6 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     size <- 3
     col <- "red"
     shap <- 18
-    alpha <- 0.5
     ix_label <- which(res$var$eta2[,axes[1]] > 0.001 | res$var$eta2[,axes[2]])
   }
 
