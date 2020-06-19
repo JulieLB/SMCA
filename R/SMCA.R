@@ -17,7 +17,7 @@
 #'data(cheese)
 #'SMCA(cheese, c1 = sqrt(nrow(cheese))/2, c2 = sqrt(ncol(cheese))/2, n = 4)
 
-SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F, Grow = NULL, Gcol = NULL, order = T) {
+SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F, Grow = NULL, Gcol = NULL, order = T, row.w = NULL) {
 
   if(sum(is.na(Y))>0) stop("Error. Missing values.")
 
@@ -25,10 +25,21 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F,
 
   if (n > min(ncol(X), nrow(X))) n <- min(ncol(X), nrow(X))
 
+  if (length(c1) == 1) {
+    c1 <- rep (c1, times = n)
+  } else if (length(c1) != n)
+    stop("Error, the length of c1 must be equal to the number of dimension.")
+
+  if (length(c2) == 1) {
+    c2 <- rep (c2, times = n)
+  } else if (length(c2) != n)
+    stop("Error, the length of c2 must be equal to the number of dimension.")
+
   if (meth =='cgsvd') {
-    res <- cgsvd(Y = Y, X = X, c1 = c1, c2 = c2, R = n, init = init, v.partition = v.partition, Grow = Grow, Gcol = Gcol)
+    res <- cgsvd(Y = Y, X = X, c1 = c1, c2 = c2, R = n, init = init, v.partition = v.partition, Grow = Grow, Gcol = Gcol, row.w = row.w)
   }else if (meth =='gpmd') {
-    res <- gpmd(Y = Y, X = X, K = n, sumabsu = c1, sumabsv = c2)
+    warning("Caution, only the first value of c1 and c2 are considered in PMD.")
+    res <- gpmd(Y = Y, X = X, K = n, sumabsu = c1[1], sumabsv = c2[1])
   }
 
   if ((sum(sort(res$D, d = T) != res$D) > 0) & order) {

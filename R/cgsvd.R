@@ -35,7 +35,8 @@ cgsvd <- function (Y,
                    itermax.pocs = 500,
                    v.partition = F,
                    Gcol = NULL,
-                   Grow = NULL) {
+                   Grow = NULL,
+                   row.w = NULL) {
 
 
   #tableau disjonctif des donnees
@@ -48,7 +49,9 @@ cgsvd <- function (Y,
   }else{ Gcol <- Gcol}
 
   ##creation vecteurs poids et masses
-  r <- X %*% matrix(rep(1, dim(X)[2])) / sum(X)
+  if (is.null(row.w)) {r <- X %*% matrix(rep(1, dim(X)[2])) / sum(X)
+  }else {r <- row.w /sum(row.w)}
+
   c <- (t(X) %*% matrix(rep(1, dim(X)[1])) / sum(X))
 
   M <- diag(as.numeric(r)) #masses
