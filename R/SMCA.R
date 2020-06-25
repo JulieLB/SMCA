@@ -9,6 +9,8 @@
 #' @param v.partition If true, creates a group constraint based on the ariables partition (by default False)
 #' @param Gcol A group partition of the data columns (categories)
 #' @param Grow A group partition of the data row
+#' @param order If TRUE, the dimensions will be decreasingly ordered by their eigen value.
+#' @param row.w A vector containing the weight of the observations (default is a vector of 1). It must be of the same size as the number of observation.
 #'
 #' @return Returns the sparse MCA for the given constraints.
 #' @export
