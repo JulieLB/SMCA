@@ -45,6 +45,8 @@ dta <- data.frame(age = c(1, 1, 2, 2, 3, 3),
 #                 lunettes = c(1, 0, 0, 0, 1, 0))
 #                 # glace = c(1, 0, 1, 0, 0, 1),
 #                 # vin = c(0, 1, 0, 1, 1, 1))
+
+dta <- apply(dta, 2, as.factor)
 ```
 
 # Apply a MCA and Sparse MCA
@@ -60,7 +62,8 @@ c1 <- sqrt(nrow(dta))*0.4
 c2 <- sqrt(15)*0.3
 Gvar <- partition_variables(dta)
 
-res1 <- SMCA::MCA(dta, n = 8)
+res1 <- SMCA::MCA(dta, n = 5)
+# res1bis <- FactoMineR::MCA(dta, ncp = 5)
 res2 <- SMCA::SMCA(dta, Gcol = Gvar, c1 = c1, c2 = c2, n = 8)
 ```
 

@@ -52,13 +52,13 @@ MCA <- function(Y, n = 5) {
 
   eta2 <- c()
   for (j in 1:n) {
-    eta2 <- cbind(eta2, sapply(1:ncol(Y), function(i) {sum(contrib[partition[[i]],j])}))
+    eta2 <- cbind(eta2, sapply(1:ncol(Y), function(i) {sum(contrib[partition[[i]],j]) }))
   }
 
   colnames(G) <- colnames(contrib) <- colnames (cos2) <- colnames(eta2) <- col
   rownames(G) <- rownames(contrib) <- rownames (cos2) <- colnames (X)
   rownames(eta2) <- colnames(Y)
-  var <- list(coord = G, contrib = 100 * contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 = 10 * eta2)
+  var <- list(coord = G, contrib = 100 * contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 = length(partition) * eta2)
 
 
   return(list (gsvd = res,
