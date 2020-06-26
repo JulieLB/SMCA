@@ -32,7 +32,7 @@ MCA <- function(Y, n = 5) {
   )
 
   #individus
-  F <- res$P %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$r)^(-1/2)) %*% res$P %*% diag(sqrt(res$D))[,1:n]
+  F <- diag(as.numeric(res$r)^(-1)) %*% res$P %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$r)^(-1/2)) %*% res$P %*% diag(sqrt(res$D))[,1:n]
   F2 <- F^2
   contrib <- 100/sum(X) * diag(rowSums(X)) %*% F2 %*% diag(1/res$D[1:n]) #(F2) %*% diag(1/colSums(F2)) * 100 #
   cos2 <- t(t(F2)%*%diag(1/rowSums(F2)))
@@ -43,7 +43,7 @@ MCA <- function(Y, n = 5) {
   ind <- list(coord = F, contrib = contrib, cos2 = cos2)
 
   #categories
-  G <- res$Q %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$c)^(-1/2)) %*% res$Q %*% diag(sqrt(res$D))[,1:n]
+  G <- diag(as.numeric(res$c)^(-1)) %*% res$Q %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$c)^(-1/2)) %*% res$Q %*% diag(sqrt(res$D))[,1:n]
   G2 <- G^2
   contrib <- 1/sum(X) * diag(colSums(X)) %*% G2 #contribution absolue
   cos2 <- t(t(G2)%*%diag(1/rowSums(G2)))

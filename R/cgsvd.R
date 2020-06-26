@@ -54,14 +54,14 @@ cgsvd <- function (Y,
 
   c <- (t(X) %*% matrix(rep(1, dim(X)[1])) / sum(X))
 
-  M <- diag(as.numeric(r)) #masses
-  W <- diag(as.numeric(c)) #weights
+  # M <- diag(as.numeric(r)) #masses
+  # W <- diag(as.numeric(c)) #weights
 
   #centrer la matrice
   X <- X / sum(X) - r %*% t(c)
 
   #contrained matrix X'
-  Xtilde <- diag((diag(M) ^ (-1 / 2))) %*% X %*% diag((diag(W) ^ (-1 / 2))) #(M %^% (-1 / 2)) %*% X %*% (W %^% (-1 / 2)) #constrained matrix
+  Xtilde <- diag(as.numeric(r) ^ (-1 / 2)) %*% X %*% diag(as.numeric(c) ^ (-1 / 2)) #(M %^% (-1 / 2)) %*% X %*% (W %^% (-1 / 2)) #constrained matrix
 
   # X_csvd <- t(Xtilde) %*% Xtilde
   X_csvd <- Xtilde
@@ -72,8 +72,8 @@ cgsvd <- function (Y,
   D <- res$D^2
   Ptilde <- res$P #data.matrix(Xtilde %*% Qtilde %*% diag(sqrt(D) ^ -1))
 
-  Q <- t(t(Qtilde) %*% diag((diag(W) ^ (-1 / 2))))#t(t(Qtilde) %*% (W %^% (-1 / 2)))
-  P <- t(t(Ptilde) %*% diag((diag(M) ^ (-1 / 2)))) #t(t(Ptilde) %*% (M %^% (-1 / 2)))
+  Q <- diag(as.numeric(c) ^ (1 / 2)) %*% Qtilde #t(t(Qtilde) %*% diag((diag(W) ^ (-1 / 2))) ) #t(t(Qtilde) %*% (W %^% (-1 / 2)))
+  P <- diag(as.numeric(r) ^ (1 / 2)) %*% Ptilde #t(t(Ptilde) %*% diag((diag(M) ^ (-1 / 2))) ) #t(t(Ptilde) %*% (M %^% (-1 / 2)))
 
   return(list(D = D, P = P, Q = Q, iter = res$it, r = r, c = c))
 }

@@ -37,8 +37,8 @@ gsvd <- function (Y, X, R = 5) {
   D <- res$d^2
   Ptilde <- res$u
 
-  Q <- diag(as.numeric(c) ^ (-1 / 2)) %*% Qtilde#t(t(Qtilde) %*% (W %^% (-1 / 2)))
-  P <- diag(as.numeric(r) ^ (-1 / 2)) %*% Ptilde #t(t(Ptilde) %*% (M %^% (-1 / 2)))
+  Q <- diag(as.numeric(c) ^ (1 / 2)) %*% Qtilde#t(t(Qtilde) %*% (W %^% (-1 / 2)))
+  P <- diag(as.numeric(r) ^ (1 / 2)) %*% Ptilde #t(t(Ptilde) %*% (M %^% (-1 / 2)))
 
   return (list(D = D, P = P, Q = Q, r = r, c = c))
 }
