@@ -34,7 +34,7 @@ MCA <- function(Y, n = 5) {
   #individus
   F <- diag(as.numeric(res$r)^(-1)) %*% res$P %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$r)^(-1/2)) %*% res$P %*% diag(sqrt(res$D))[,1:n]
   F2 <- F^2
-  contrib <- 100/sum(X) * diag(rowSums(X)) %*% F2 %*% diag(1/res$D[1:n]) #(F2) %*% diag(1/colSums(F2)) * 100 #
+  contrib <- diag(as.numeric(res$r)) %*% F2 %*% diag(1/res$D[1:n])  #1/sum(X) * diag(rowSums(X)) %*% F2 %*% diag(1/res$D[1:n])
   cos2 <- t(t(F2)%*%diag(1/rowSums(F2)))
 
   col <- paste("dim", seq(from = 1, by = 1, length = n))
@@ -45,7 +45,7 @@ MCA <- function(Y, n = 5) {
   #categories
   G <- diag(as.numeric(res$c)^(-1)) %*% res$Q %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$c)^(-1/2)) %*% res$Q %*% diag(sqrt(res$D))[,1:n]
   G2 <- G^2
-  contrib <- 1/sum(X) * diag(colSums(X)) %*% G2 #contribution absolue
+  contrib <- diag(as.numeric(res$c)) %*% G2 #1/sum(X) * diag(colSums(X)) %*% G2 #contribution absolue
   cos2 <- t(t(G2)%*%diag(1/rowSums(G2)))
 
   partition <- partition_variables(Y)
@@ -58,7 +58,7 @@ MCA <- function(Y, n = 5) {
   colnames(G) <- colnames(contrib) <- colnames (cos2) <- colnames(eta2) <- col
   rownames(G) <- rownames(contrib) <- rownames (cos2) <- colnames (X)
   rownames(eta2) <- colnames(Y)
-  var <- list(coord = G, contrib = 100 * contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 = length(partition) * eta2)
+  var <- list(coord = G, contrib = contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 = length(partition) * eta2)
 
 
   return(list (gsvd = res,
