@@ -91,7 +91,7 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F,
   rownames(G) <- rownames(contrib) <- rownames (cos2) <- colnames (X)
   rownames(eta2) <- colnames(Y)
 
-  var <- list(coord = G, contrib = contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 = length(partition) * eta2)
+  var <- list(coord = G, contrib = contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 =eta2 )#*length(partition))
 
 
   return(list (cgsvd = res,
