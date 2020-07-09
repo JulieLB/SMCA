@@ -11,7 +11,7 @@
 #' data(cheese)
 #' MCA(cheese, 3)
 
-MCA <- function(Y, n = 5) {
+MCA <- function(Y, n = 5, row.w = NULL) {
 
   if(sum(is.na(Y))>0) stop("Error. Missing values.")
 
@@ -19,7 +19,7 @@ MCA <- function(Y, n = 5) {
 
   if (n > min(ncol(X), nrow(X))) n <- min(ncol(X), nrow(X))
 
-  res <- gsvd(Y = Y, X = X, R = n)
+  res <- gsvd(Y = Y, X = X, R = n, row.w = row.w)
 
   Gcol <- partition_variables(Y)
   Itot <- 1/length(Gcol)*sum(sapply(1:length(Gcol), function(i) {length(Gcol[[i]])-1}))
