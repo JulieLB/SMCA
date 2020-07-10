@@ -49,26 +49,25 @@ cgsvd <- function (Y,
   }else{ Gcol <- Gcol}
 
   ##creation vecteurs poids et masses
-  if (is.null(row.w)) {
-    r <- X %*% matrix(rep(1, dim(X)[2])) / sum(X)
-    c <- t(X) %*% matrix(rep(1, dim(X)[1])) / sum(X)
-    #centrer la matrice
-    X <- X / sum(X) - r %*% t(c)
-  }else {
-    mat <- as.matrix(X)*row.w/sum(X*row.w)
-    # r <- row.w /sum(row.w)
-    r <- as.matrix(rowSums(mat))
-    c <- as.matrix(colSums(mat))
-    #centrer la matrice
-    X <- mat - r %*% t(c)
-  }
+  # if (is.null(row.w)) {
+  #   r <- X %*% matrix(rep(1, dim(X)[2])) / sum(X)
+  #   c <- t(X) %*% matrix(rep(1, dim(X)[1])) / sum(X)
+  #   #centrer la matrice
+  #   X <- X / sum(X) - r %*% t(c)
+  # }else {
+  #   mat <- as.matrix(X)*row.w/sum(X*row.w)
+  #   # r <- row.w /sum(row.w)
+  #   r <- as.matrix(rowSums(mat))
+  #   c <- as.matrix(colSums(mat))
+  #   #centrer la matrice
+  #   X <- mat - r %*% t(c)
+  # }
 
-  # if (is.null(row.w)) {r <- X %*% matrix(rep(1, dim(X)[2])) / sum(X)
-  # }else {r <- row.w /sum(row.w)}
-  #
-  # c <- (t(X) %*% matrix(rep(1, dim(X)[1])) / sum(X))
+  r <- X %*% matrix(rep(1, dim(X)[2])) / sum(X)
+  c <- (t(X) %*% matrix(rep(1, dim(X)[1])) / sum(X))
+
   # #centrer la matrice
-  # X <- X / sum(X) - r %*% t(c)
+  X <- X / sum(X) - r %*% t(c)
 
   # M <- diag(as.numeric(r)) #masses
   # W <- diag(as.numeric(c)) #weights
@@ -81,7 +80,7 @@ cgsvd <- function (Y,
   # X_csvd <- t(Xtilde) %*% Xtilde
   X_csvd <- Xtilde
 
-  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
+  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
 
   Qtilde <- res$Q
   D <- res$D^2
