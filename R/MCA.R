@@ -16,6 +16,7 @@ MCA <- function(Y, n = 5, row.w = NULL) {
   if(sum(is.na(Y))>0) stop("Error. Missing values.")
 
   X <- tab_disjonctif(Y)
+  if (!is.null(row.w) & length(row.w) == nrow(X)) X <- diag(row.w) %*% X
 
   if (n > min(ncol(X), nrow(X))) n <- min(ncol(X), nrow(X))
 

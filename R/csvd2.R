@@ -38,11 +38,12 @@ csvd <- function (X,
                   eps.pocs = 1e-12,
                   itermax.pocs = 1000,
                   Gcol = NULL,
-                  Grow = NULL) {
+                  Grow = NULL,
+                  embeded = T) {
 
   # R <- min(nrow(X), ncol(X))
 
-  if (is.null(r) | is.null(c)) {
+  if (is.null(r) | is.null(c) | embeded == F) {
     P <- matrix(0, nrow = nrow(X), ncol = R+1)
     Q <- matrix(0, nrow = ncol(X), ncol = R+1)
   }else if (length(r)==nrow(X) & length(c)==ncol(X)){

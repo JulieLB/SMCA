@@ -1,9 +1,10 @@
-#' CGSVD
+#' Constrained Generalized Singular Value Decomposition
 #'
-#' @param Y A data frame or matrix with factors
-#' @param c1 The radius of l1 ball (constraint)
-#' @param c2 The radius of l2 ball (constraint)
-#' @param R The number of singular triplets we want to obtain
+#' @param Y A data frame or matrix containing factors
+#' @param X ???
+#' @param c1 radius of the l1 ball (left)
+#' @param c2 radius of the l2 ball (right)
+#' @param R number of singular triplets we want to obtain
 #' @param eps.pi Precision
 #' @param itermax.pi The maximum number of iteration of power iteration
 #' @param eps.pocs Precision
@@ -12,6 +13,7 @@
 #' @param init Method to initialize the singular vectors, by default "gsvd" (can also be "rand")
 #' @param Gcol A group partition of the data columns (categories)
 #' @param Grow A group partition of the data rows
+#' @param row.w
 #'
 #' @return Returns the constrained singular triplets of factor data and the number of iteration used to obtain them.
 #' @export
@@ -36,17 +38,21 @@ cgsvd <- function (Y,
                    v.partition = F,
                    Gcol = NULL,
                    Grow = NULL,
-                   row.w = NULL) {
+                   row.w = NULL,
+                   embeded = T) {
 
 
   #tableau disjonctif des donnees
   X <- as.matrix(X)
 
-  n <- ncol(X) - ncol(Y) #nb de vp que l'on cherche
+  n <- ncol(X) - ncol(Y) # nb de vp que l'on cherche
 
-  #partition
-  if (v.partition) {Gcol <- partition_variables(Y)
-  }else{ Gcol <- Gcol}
+  # partition
+  if (v.partition) {
+    Gcol <- partition_variables(Y)
+  } else {
+    Gcol <- Gcol
+  }
 
   ##creation vecteurs poids et masses
   # if (is.null(row.w)) {
@@ -80,7 +86,9 @@ cgsvd <- function (Y,
   # X_csvd <- t(Xtilde) %*% Xtilde
   X_csvd <- Xtilde
 
-  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
+  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, embeded = embeded)
+  # res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = NULL, c = NULL, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
+
 
   Qtilde <- res$Q
   D <- res$D^2
