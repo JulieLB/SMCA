@@ -93,21 +93,24 @@ SMCA <-
   #categories
   G <- diag(as.numeric(res$c)^(-1)) %*% res$Q %*% diag(sqrt(res$D))[,1:n] #diag(as.numeric(res$c)^(-1/2)) %*% res$Q %*% diag(sqrt(res$D))[,1:n]
   G2 <- G^2
-  contrib <- diag(as.numeric(res$c)) %*% G2 #1/sum(X) * diag(colSums(X)) %*% G2 #contribution absolue
+  contrib1 <- diag(as.numeric(res$c)) %*% G2 #1/sum(X) * diag(colSums(X)) %*% G2 #contribution absolue
+  contrib2 <-  contrib1 %*% diag(1/res$D[1:n])
   cos2 <- t(t(G2)%*%diag(1/rowSums(G2)))
 
   partition <- partition_variables(Y)
 
   eta2 <- c()
+  contrib_var <- c()
   for (j in 1:n) {
-    eta2 <- cbind(eta2, sapply(1:ncol(Y), function(i) {sum(contrib[partition[[i]],j]) }))
+    eta2 <- cbind(eta2, sapply(1:ncol(Y), function(i) {sum(contrib1[partition[[i]],j]) }))
+    contrib_var <- cbind(contrib_var, sapply(1:ncol(Y), function(i) {sum(contrib2[partition[[i]],j]) }))
   }
 
-  colnames(G) <- colnames(contrib) <- colnames (cos2) <- colnames(eta2) <- col
+  colnames(G) <- colnames(contrib) <- colnames (cos2) <- colnames(eta2) <- colnames(contrib_var)<- col
   rownames(G) <- rownames(contrib) <- rownames (cos2) <- colnames (X)
-  rownames(eta2) <- colnames(Y)
+  rownames(eta2) <- rownames(contrib_var) <- colnames(Y)
 
-  var <- list(coord = G, contrib = contrib %*% diag(1/res$D[1:n]), cos2 = cos2, eta2 =eta2 )#*length(partition))
+  var <- list(coord = G, contrib = contrib1, cos2 = cos2, contrib_var = contrib_var, eta2 =eta2 *length(partition))
 
 
   return(list (cgsvd = res,
