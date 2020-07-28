@@ -34,20 +34,22 @@ PI <- function(X,
                eps.pocs = 1e-16,
                itermax.pocs = 1000,
                Gcol = NULL,
-               Grow = NULL) {
+               Grow = NULL,
+               orth.first = T) {
 
   pnew <- pold <- as.vector(P0) #normalize(rnorm(nrow(X)))
   qnew <- qold <- as.vector(Q0) #normalize(rnorm(ncol(X)))
 
   for (j in 1:itermax.pi) {
-    qnew <- proj.l1l2.orth(t(X) %*% pold, M = Q, c = c2, itermax.pocs = itermax.pocs, eps.pocs = eps.pocs, G = Gcol)$x
-    pnew <- proj.l1l2.orth(X %*% qnew, M = P, c = c1, itermax.pocs = itermax.pocs, eps.pocs = eps.pocs, G = Grow)$x
+    qnew <- proj.l1l2.orth(t(X) %*% pold, M = Q, c = c2, itermax.pocs = itermax.pocs, eps.pocs = eps.pocs, G = Gcol, orth.first = orth.first)$x
+    pnew <- proj.l1l2.orth(X %*% qnew, M = P, c = c1, itermax.pocs = itermax.pocs, eps.pocs = eps.pocs, G = Grow, orth.first = orth.first)$x
 
     if ((norm2(pold - pnew) < eps.pi) && (norm2(qold - qnew) < eps.pi)) break
 
     pold <- pnew
     qold <- qnew
   }
+
   return( list(p=pnew, q=qnew, iter=j))
 }
 

@@ -40,7 +40,8 @@ csvd <- function (X,
                   itermax.pocs = 1000,
                   Gcol = NULL,
                   Grow = NULL,
-                  double.centering = T) {
+                  double.centering = T,
+                  orth.first = T) {
 
   # R <- min(nrow(X), ncol(X))
 
@@ -63,7 +64,7 @@ csvd <- function (X,
     Q0 <- sapply(1:R, function (i) normalize(rnorm(ncol(X))))
   }
 
-  res1 <- PI(X, c1[1], c2[1], P0 = P0[, 1], Q0 = Q0[, 1], P = P, Q = Q, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
+  res1 <- PI(X, c1[1], c2[1], P0 = P0[, 1], Q0 = Q0[, 1], P = P, Q = Q, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, orth.first = orth.first)
   P[, 2] <- res1$p
   Q[, 2] <- res1$q
 
@@ -71,7 +72,7 @@ csvd <- function (X,
 
   if (R!=1) {
     for (i in 2:R) {
-      res2 <- PI(X, c1[i], c2[i], P0[,i], Q0[,i], P = P[,1:i], Q = Q[,1:i], eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
+      res2 <- PI(X, c1[i], c2[i], P0[,i], Q0[,i], P = P[,1:i], Q = Q[,1:i], eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, orth.first = orth.first)
       P[,i+1] <- res2$p
       Q[,i+1] <- res2$q
       iter <- c(iter, res2$iter)

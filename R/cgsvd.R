@@ -40,7 +40,8 @@ cgsvd <- function (Y,
                    Gcol = NULL,
                    Grow = NULL,
                    row.w = NULL,
-                   double.centering = T) {
+                   double.centering = T,
+                   orth.first = T) {
 
 
   #tableau disjonctif des donnees
@@ -87,7 +88,7 @@ cgsvd <- function (Y,
   # X_csvd <- t(Xtilde) %*% Xtilde
   X_csvd <- Xtilde
 
-  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, double.centering = double.centering)
+  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, double.centering = double.centering, orth.first = orth.first)
   # res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = NULL, c = NULL, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
 
 
