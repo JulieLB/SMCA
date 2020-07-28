@@ -14,6 +14,7 @@
 #' @param Gcol A group partition of the data columns (categories)
 #' @param Grow A group partition of the data rows
 #' @param row.w
+#' @param double.centering
 #'
 #' @return Returns the constrained singular triplets of factor data and the number of iteration used to obtain them.
 #' @export
@@ -39,7 +40,7 @@ cgsvd <- function (Y,
                    Gcol = NULL,
                    Grow = NULL,
                    row.w = NULL,
-                   embeded = T) {
+                   double.centering = T) {
 
 
   #tableau disjonctif des donnees
@@ -86,7 +87,7 @@ cgsvd <- function (Y,
   # X_csvd <- t(Xtilde) %*% Xtilde
   X_csvd <- Xtilde
 
-  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, embeded = embeded)
+  res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = r, c = c, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow, double.centering = double.centering)
   # res <- csvd(X_csvd, R, c1 = c1, c2 = c2, r = NULL, c = NULL, init = init, eps.pi = eps.pi, itermax.pi = itermax.pi, eps.pocs = eps.pocs, itermax.pocs = itermax.pocs, Gcol = Gcol, Grow = Grow)
 
 

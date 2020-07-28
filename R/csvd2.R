@@ -13,6 +13,7 @@
 #' @param Grow A group partition of the data columns
 #' @param r The row weight (default = NULL). Add r if you want orthogonality of the left singular vectors with the row weight.
 #' @param c The column weight (default = NULL). Add c if you want orthogonality of the right singular vectors with the column weight.
+#' @param double.centering
 #'
 #' @return Returns the constrained singular triplets of numeric data and the number of iteration used to obtain them
 #' @export
@@ -39,16 +40,16 @@ csvd <- function (X,
                   itermax.pocs = 1000,
                   Gcol = NULL,
                   Grow = NULL,
-                  embeded = T) {
+                  double.centering = T) {
 
   # R <- min(nrow(X), ncol(X))
 
-  if (is.null(r) | is.null(c) | embeded == F) {
+  if (is.null(r) | is.null(c) | double.centering == F) {
     P <- matrix(0, nrow = nrow(X), ncol = R+1)
     Q <- matrix(0, nrow = ncol(X), ncol = R+1)
   }else if (length(r)==nrow(X) & length(c)==ncol(X)){
-    P <- cbind(r, matrix(0, nrow = nrow(X), ncol = R))
-    Q <- cbind(c, matrix(0, nrow = ncol(X), ncol = R))
+    P <- cbind(sqrt(r), matrix(0, nrow = nrow(X), ncol = R))
+    Q <- cbind(sqrt(c), matrix(0, nrow = ncol(X), ncol = R))
   }else stop("Error. Wrong attribution of r or c.")
 
   iter <- c()

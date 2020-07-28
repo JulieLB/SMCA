@@ -10,6 +10,7 @@
 #' @param Gcol A group partition of the data columns (categories)
 #' @param Grow A group partition of the data row
 #' @param order If TRUE, the dimensions will be decreasingly ordered by their eigen value.
+#' @param double.centering
 #' @param row.w A vector containing the weight of the observations (default is a vector of 1). It must be of the same size as the number of observation.
 #'
 #' @return Returns the sparse MCA for the given constraints.
@@ -19,7 +20,19 @@
 #'data(cheese)
 #'SMCA(cheese, c1 = sqrt(nrow(cheese))/2, c2 = sqrt(ncol(cheese))/2, n = 4)
 
-SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F, Grow = NULL, Gcol = NULL, order = T, row.w = NULL, embeded = T) {
+SMCA <-
+  function(Y,
+           c1,
+           c2,
+           n = 5,
+           meth = 'cgsvd',
+           init = "svd",
+           v.partition = F,
+           Grow = NULL,
+           Gcol = NULL,
+           order = T,
+           row.w = NULL,
+           double.centering = T) {
 
   if(sum(is.na(Y))>0) stop("Error. Missing values.")
 
@@ -40,7 +53,7 @@ SMCA <- function(Y, c1, c2, n = 5, meth ='cgsvd', init = "svd", v.partition = F,
     stop("Error, the length of c2 must be equal to the number of dimension.")
 
   if (meth =='cgsvd') {
-    res <- cgsvd(Y = Y, X = X, c1 = c1, c2 = c2, R = n, init = init, v.partition = v.partition, Grow = Grow, Gcol = Gcol, row.w = row.w, embeded = embeded)
+    res <- cgsvd(Y = Y, X = X, c1 = c1, c2 = c2, R = n, init = init, v.partition = v.partition, Grow = Grow, Gcol = Gcol, row.w = row.w, double.centering = double.centering)
   }else if (meth =='gpmd') {
     warning("Caution, only the first value of c1 and c2 are considered in PMD.")
     res <- gpmd(Y = Y, X = X, K = n, sumabsu = c1[1], sumabsv = c2[1])

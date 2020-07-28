@@ -35,7 +35,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     col <- "red"
     shap <- 17
     size <- res$var$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$var$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
-    ix_label <- which(res$var$contrib[,axes[1]] > 0.3 | res$var$contrib[,axes[2]] > 0.3)
+    ix_label <- which(res$var$contrib[, axes[1]] > mean(res$var$contrib[,axes[1]]) | res$var$contrib[, axes[2]] > mean(res$var$contrib[,axes[2]]))
 
     if (is.null(res$other$Gcol)) {Gcol <- partition_variables(res$other$Xinit)
     }else {Gcol <- res$other$Gcol}
