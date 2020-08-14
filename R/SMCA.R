@@ -106,8 +106,8 @@ SMCA <-
     contrib_var <- cbind(contrib_var, sapply(1:ncol(Y), function(i) {sum(contrib2[partition[[i]],j]) }))
   }
 
-  colnames(G) <- colnames(contrib) <- colnames (cos2) <- colnames(eta2) <- colnames(contrib_var)<- col
-  rownames(G) <- rownames(contrib) <- rownames (cos2) <- colnames (X)
+  colnames(G) <- colnames(contrib1) <- colnames (cos2) <- colnames(eta2) <- colnames(contrib_var)<- col
+  rownames(G) <- rownames(contrib1) <- rownames (cos2) <- colnames (X)
   rownames(eta2) <- rownames(contrib_var) <- colnames(Y)
 
   var <- list(coord = G, contrib = contrib1, cos2 = cos2, contrib_var = contrib_var, eta2 =eta2 *length(partition))

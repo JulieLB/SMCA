@@ -18,7 +18,14 @@
 #' plot.SMCA(res, choix = "ind", aff.noms = F, habillage = 3)
 #' plot.SMCA(res, choix = "var", aff.noms = T)
 
-plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillage = NULL, vect.habillage = NULL, title.precision = NULL, alpha = 0.5) {
+plot_SMCA <- function (res,
+                       axes = c(1,2),
+                       choix = "ind", aff.noms = F,
+                       habillage = NULL,
+                       vect.habillage = NULL,
+                       title.precision = NULL,
+                       alpha = 0.5,
+                       nb_names = 0.3) {
 
   #est ce qu'il s'agit d'un plot sur les individus ou sur les variables
   if (choix == "ind") {
@@ -27,7 +34,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     col <- "blue"
     shap <- 16
     size <- res$ind$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$ind$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
-    ix_label <- which(res$ind$contrib[,axes[1]] > 0.3 | res$ind$contrib[,axes[2]] > 0.3)
+    ix_label <- which(res$ind$contrib[,axes[1]] > nb_names | res$ind$contrib[,axes[2]] > nb_names)
 
   }else if (choix == "mod") {
     coord <- res$var$coord
@@ -35,7 +42,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     col <- "red"
     shap <- 17
     size <- res$var$contrib[, axes[1]] * res$eig$eigenvalue[axes[1]] + res$var$contrib[, axes[2]] * res$eig$eigenvalue[axes[2]]
-    ix_label <- which(res$var$contrib[, axes[1]] > mean(res$var$contrib[,axes[1]]) | res$var$contrib[, axes[2]] > mean(res$var$contrib[,axes[2]]))
+    ix_label <- which(res$var$contrib[, axes[1]] > nb_names | res$var$contrib[, axes[2]] > nb_names)
 
     if (is.null(res$other$Gcol)) {Gcol <- partition_variables(res$other$Xinit)
     }else {Gcol <- res$other$Gcol}
@@ -48,7 +55,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     size <- 3
     col <- "red"
     shap <- 18
-    ix_label <- which(res$var$eta2[,axes[1]] > 0.001 | res$var$eta2[,axes[2]])
+    ix_label <- which(res$var$eta2[,axes[1]] > nb_names | res$var$eta2[,axes[2]] > nb_names)
   }
 
   #add a precision to the title ?
@@ -75,7 +82,7 @@ plot_SMCA <- function (res, axes = c(1,2), choix = "ind", aff.noms = F, habillag
     coord <- cbind (coord, hab = res$other$Xinit[,habillage])
     aff.points <- geom_point(aes(size = size, colour = factor(hab)), shape = shap, alpha = alpha)
     if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
-  } else if (choix == "mod"){
+  } else if (choix == "mod" && is.null(vect.habillage)){
     coord <- cbind (coord, hab = hab)
     aff.points <- geom_point(aes(size = size, colour = factor(hab)), shape = shap, alpha = alpha)
     if (aff.noms) {aff.noms.plot <- ggrepel::geom_text_repel(size = 3, aes(color = factor(hab)), force = 2)}
